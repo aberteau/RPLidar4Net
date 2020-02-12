@@ -14,7 +14,8 @@ namespace RPLidar4Net.WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string Path = @"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\200212 2347.txt";
+        //private const string Path = @"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\Scan Data\RoboStudio\200212 2347.txt";
+        private const string Path = @"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\Scan Data\SlamtecRobopeakLidar\200213 0033.txt";
         private System.Drawing.PointF _origin;
 
         public MainWindow()
