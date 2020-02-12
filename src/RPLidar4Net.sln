@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "WpfApp\WpfApp.csproj", "{51FF760E-59BE-4F14-9A69-EC0811D84233}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{73F94748-4298-4522-916E-C37D691657E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleApp", "TestConsoleApp\TestConsoleApp.csproj", "{B67A0058-9D92-4731-A442-235A69D2E0CD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51FF760E-59BE-4F14-9A69-EC0811D84233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51FF760E-59BE-4F14-9A69-EC0811D84233}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51FF760E-59BE-4F14-9A69-EC0811D84233}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51FF760E-59BE-4F14-9A69-EC0811D84233}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73F94748-4298-4522-916E-C37D691657E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73F94748-4298-4522-916E-C37D691657E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73F94748-4298-4522-916E-C37D691657E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73F94748-4298-4522-916E-C37D691657E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B67A0058-9D92-4731-A442-235A69D2E0CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B67A0058-9D92-4731-A442-235A69D2E0CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B67A0058-9D92-4731-A442-235A69D2E0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B67A0058-9D92-4731-A442-235A69D2E0CD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38148CA3-8792-4AF2-BC5B-11AF93F57CCC}
+	EndGlobalSection
+EndGlobal
