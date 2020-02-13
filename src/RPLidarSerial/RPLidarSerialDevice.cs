@@ -193,7 +193,7 @@ namespace RPLidarSerial
                         DataResponse = new HealthResponse();
                         break;
                     case RPLidar4Net.Core.Api.Command.GetInfo:
-                        DataResponse = new Response_Information();
+                        DataResponse = new InformationResponse();
                         break;
                     case RPLidar4Net.Core.Api.Command.Reset:
                         sleep = true;
@@ -268,9 +268,9 @@ namespace RPLidarSerial
         /// Get Device Information
         /// Serial No. etc.
         /// </summary>
-        public Response_Information GetDeviceInfo()
+        public InformationResponse GetDeviceInfo()
         {
-            return (Response_Information)this.SendCommand(RPLidar4Net.Core.Api.Command.GetInfo);
+            return (InformationResponse)this.SendCommand(RPLidar4Net.Core.Api.Command.GetInfo);
             
         }
         /// <summary>

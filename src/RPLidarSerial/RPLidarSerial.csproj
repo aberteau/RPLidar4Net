@@ -47,7 +47,7 @@
     <Compile Include="RPLidar\IResponse.cs" />
     <Compile Include="RPLidar\CommandResponse.cs" />
     <Compile Include="RPLidar\HealthResponse.cs" />
-    <Compile Include="RPLidar\Response_Information.cs" />
+    <Compile Include="RPLidar\InformationResponse.cs" />
     <Compile Include="RPLidar\Response_PointFormat.cs" />
     <Compile Include="RPLidar\Commands.cs" />
   </ItemGroup>

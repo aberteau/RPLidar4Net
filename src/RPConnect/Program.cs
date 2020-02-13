@@ -33,7 +33,7 @@ namespace RPLidarSerialSimpleConnect
                 //Stop motor
                 RPLidar.StopMotor();
                 //Get Device Information
-                Response_Information responseInformation = RPLidar.GetDeviceInfo();
+                InformationResponse responseInformation = RPLidar.GetDeviceInfo();
                 //Get Device Health
                 RPLidar.GetDeviceHealth();
                 //Get Data Event

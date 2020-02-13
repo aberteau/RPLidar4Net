@@ -8,7 +8,7 @@ namespace RPLidarSerial.RPLidar
     /// <summary>
     /// Response Information
     /// </summary>
-    public class Response_Information : IResponse
+    public class InformationResponse : IResponse
     {
         /// <summary>
         /// Total Message Bytes
