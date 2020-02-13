@@ -45,13 +45,6 @@ namespace RPLidarSerial.RPLidar
         RPLIDAR_ANS_TYPE_DEVHEALTH = 0x6,
     }
 
-    public enum ReponseMode
-    {
-        RPLIDAR_RESP_MODE_SINGLE = 0x0,
-        RPLIDAR_RESP_MODE_MULTI = 0x1,
-        RPLIDAR_RESP_MODE_RESV1 = 0x2,
-        RPLIDAR_RESP_MODE_RESV2 = 0x3,
-    }
     public enum StatusCode
     {
         RPLIDAR_STATUS_OK = 0x0,

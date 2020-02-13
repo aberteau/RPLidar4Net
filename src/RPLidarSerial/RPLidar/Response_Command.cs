@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RPLidar4Net.Core.Api;
 
 namespace RPLidarSerial.RPLidar
 {
@@ -35,7 +36,7 @@ namespace RPLidarSerial.RPLidar
         /// Not all CMD's have a response. 
         /// 0 = Single, 1 = Multi
         /// </summary>
-        public ReponseMode ResponseMode { get; set; }
+        public SendMode ResponseMode { get; set; }
         public ReponseType ResponseType { get; set; }
         /// <summary>
         /// Parse Data
@@ -61,11 +62,11 @@ namespace RPLidarSerial.RPLidar
 
             switch (data[5])
             {
-                case (byte)ReponseMode.RPLIDAR_RESP_MODE_SINGLE:
-                    this.ResponseMode = ReponseMode.RPLIDAR_RESP_MODE_SINGLE;
+                case (byte)SendMode.SingleRequestSingleResponse:
+                    this.ResponseMode = SendMode.SingleRequestSingleResponse;
                     break;
-                case (byte)ReponseMode.RPLIDAR_RESP_MODE_MULTI:
-                    this.ResponseMode = ReponseMode.RPLIDAR_RESP_MODE_MULTI;
+                case (byte)SendMode.SingleRequestMultipleResponse:
+                    this.ResponseMode = SendMode.SingleRequestMultipleResponse;
                     break;
             }
             switch(data[6])
