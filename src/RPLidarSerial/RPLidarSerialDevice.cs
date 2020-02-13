@@ -221,7 +221,7 @@ namespace RPLidarSerial
                 if (DataResponse != null)
                 {
                     //Read Command Header Response
-                    IResponse hdrType = new Response_Command();
+                    IResponse hdrType = new CommandResponse();
                     //Poll for data and parse response for the CMD
                     hdrType.parseData(Reponse(1000, hdrType));
 
