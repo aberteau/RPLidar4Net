@@ -220,10 +220,10 @@ namespace RPLidarSerial
                     //Read Command Header Response
                     IResponse hdrType = new CommandResponse();
                     //Poll for data and parse response for the CMD
-                    hdrType.parseData(Reponse(1000, hdrType.Length));
+                    hdrType.parseData(Read(hdrType.Length, 1000));
 
                     //Poll for the command data and parse response
-                    DataResponse.parseData(Reponse(1000, DataResponse.Length));
+                    DataResponse.parseData(Read(DataResponse.Length, 1000));
 
                     return DataResponse;
                 }
@@ -390,13 +390,14 @@ namespace RPLidarSerial
                     Frame.Add(measurementType);
             }
         }
-    
+
         /// <summary>
         /// Waits for Serial Data
         /// </summary>
+        /// <param name="responseLength"></param>
         /// <param name="timeout">Timeout in milliseconds</param>
         /// <returns></returns>
-        public byte[] Reponse(int timeout, int responseLength)
+        public byte[] Read(int responseLength, int timeout)
         {
             try
             {
