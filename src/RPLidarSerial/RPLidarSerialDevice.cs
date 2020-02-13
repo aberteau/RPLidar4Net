@@ -185,25 +185,25 @@ namespace RPLidarSerial
                 bool sleep = false;
                 switch(command)
                 {
-                    case RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_SCAN:
+                    case RPLidar4Net.Core.Api.Command.Scan:
                         DataResponse = null;
                         //Reponses are handled in the Scanning thread
                         break;
-                    case RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_GET_DEVICE_HEALTH:
+                    case RPLidar4Net.Core.Api.Command.GetHealth:
                         DataResponse = new Response_Health();
                         break;
-                    case RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_GET_DEVICE_INFO:
+                    case RPLidar4Net.Core.Api.Command.GetInfo:
                         DataResponse = new Response_Information();
                         break;
-                    case RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_RESET:
+                    case RPLidar4Net.Core.Api.Command.Reset:
                         sleep = true;
                         DataResponse = null;
                         break;
-                    case RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_STOP:
+                    case RPLidar4Net.Core.Api.Command.Stop:
                         sleep = true;
                         DataResponse = null;
                         break;
-                    case RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_FORCE_SCAN:
+                    case RPLidar4Net.Core.Api.Command.ForceScan:
                         DataResponse = null;
                         //Reponses are handled in the Scanning thread
                         //Use with care, returns results without motor rotation synchronization
@@ -262,7 +262,7 @@ namespace RPLidarSerial
         /// </summary>
         public void Reset()
         {
-            this.SendCommand(RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_RESET);
+            this.SendCommand(RPLidar4Net.Core.Api.Command.Reset);
         }
         /// <summary>
         /// Get Device Information
@@ -270,7 +270,7 @@ namespace RPLidarSerial
         /// </summary>
         public Response_Information GetDeviceInfo()
         {
-            return (Response_Information)this.SendCommand(RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_GET_DEVICE_INFO);
+            return (Response_Information)this.SendCommand(RPLidar4Net.Core.Api.Command.GetInfo);
             
         }
         /// <summary>
@@ -278,7 +278,7 @@ namespace RPLidarSerial
         /// </summary>
         public Response_Health GetDeviceHealth()
         {
-            return (Response_Health)this.SendCommand(RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_GET_DEVICE_HEALTH);
+            return (Response_Health)this.SendCommand(RPLidar4Net.Core.Api.Command.GetHealth);
         }
         /// <summary>
         /// Force Start Scanning
@@ -297,7 +297,7 @@ namespace RPLidarSerial
                     if (!_motorRunning)
                         this.StartMotor();
                     //Start Scan
-                    this.SendCommand(RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_FORCE_SCAN);
+                    this.SendCommand(RPLidar4Net.Core.Api.Command.ForceScan);
                     //Start Scan read thread
                     _scanThread = new Thread(ScanThread);
                     _scanThread.Start();
@@ -320,7 +320,7 @@ namespace RPLidarSerial
                     if (!_motorRunning)
                         this.StartMotor();
                     //Start Scan
-                    this.SendCommand(RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_SCAN);
+                    this.SendCommand(RPLidar4Net.Core.Api.Command.Scan);
                     //Start Scan read thread
                     _scanThread = new Thread(ScanThread);
                     _scanThread.Start();
@@ -339,7 +339,7 @@ namespace RPLidarSerial
                 {
                     this._isScanning = false;
                     _scanThread.Join();
-                    this.SendCommand(RPLidar4Net.Core.Api.Command.RPLIDAR_CMD_STOP);
+                    this.SendCommand(RPLidar4Net.Core.Api.Command.Stop);
                 });
                 myThread.Start();
                 myThread.Join();
