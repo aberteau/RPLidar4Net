@@ -74,20 +74,20 @@ namespace RPLidarSerial
         /// <summary>
         /// Single scan result, full revolution
         /// </summary>
-        private List<Response_PointFormat> Frame = new List<Response_PointFormat>();
+        private List<PointFormatResponse> Frame = new List<PointFormatResponse>();
         /// <summary>
         /// List of Scan Frames
         /// </summary>
-        private List<List<Response_PointFormat>> _Frames = new List<List<Response_PointFormat>>();
+        private List<List<PointFormatResponse>> _Frames = new List<List<PointFormatResponse>>();
         /// <summary>
         /// Gets or Sets Frame sets
         /// </summary>
-        public List<List<Response_PointFormat>> Frames { get { return _Frames; } set { _Frames = value; } }
+        public List<List<PointFormatResponse>> Frames { get { return _Frames; } set { _Frames = value; } }
         /// <summary>
         /// Data Events
         /// </summary>
         /// <param name="Frame"></param>
-        public delegate void DataHandler(List<Response_PointFormat> Frame);
+        public delegate void DataHandler(List<PointFormatResponse> Frame);
         public event DataHandler Data; 
         /// <summary>
         /// Robo Peak Lidar 360 Scanner, serial connection
@@ -354,7 +354,7 @@ namespace RPLidarSerial
         {
             DateTime _LastSyncBit = new DateTime();
             //Make some room for a measurement
-            Response_PointFormat measurementType = null;
+            PointFormatResponse measurementType = null;
             //Start writing output (for piping to csv)
             if (WriteOutCoordinates)
                 Console.WriteLine("X:Y");
@@ -362,7 +362,7 @@ namespace RPLidarSerial
             while (this._isScanning)
             {
                 //Init Point format
-                measurementType = new Response_PointFormat();
+                measurementType = new PointFormatResponse();
                 //Poll for data and parse response
                 measurementType.parseData(waitPoint(1000));
                 //measurementType.parseData(Reponse(1000, (iRPLidarResponse)measurementType));
@@ -381,7 +381,7 @@ namespace RPLidarSerial
                     //Keep it below 10 frames
                     if (_Frames.Count > 10) { _Frames.RemoveAt(0); }
                     //Start a new Frame list
-                    Frame = new List<Response_PointFormat>();
+                    Frame = new List<PointFormatResponse>();
                     if (Verbose)
                         Console.WriteLine(":: Syncbit, last # of valid measurements: " + _Frames[_Frames.Count-1].Count);
                 }
