@@ -9,7 +9,7 @@ namespace RPLidarSerial.RPLidar
     /// <summary>
     /// Response for CMD
     /// </summary>
-    public class Response_Command : iRPLidarResponse
+    public class Response_Command : IResponse
     {
         /// <summary>
         /// Total Message Bytes

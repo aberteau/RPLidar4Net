@@ -6,7 +6,7 @@ using System.Text;
 namespace RPLidarSerial.RPLidar
 {
 
-    public interface iRPLidarResponse
+    public interface IResponse
     {
         /// <summary>
         /// Total Message Bytes

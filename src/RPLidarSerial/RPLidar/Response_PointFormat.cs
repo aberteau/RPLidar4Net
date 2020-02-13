@@ -13,7 +13,7 @@ namespace RPLidarSerial.RPLidar
     /// <summary>
     /// Scan Response
     /// </summary>
-    public class Response_PointFormat : iRPLidarResponse
+    public class Response_PointFormat : IResponse
     {
         /// <summary>
         /// Total Message Bytes

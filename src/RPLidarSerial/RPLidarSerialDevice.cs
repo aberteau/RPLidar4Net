@@ -168,7 +168,7 @@ namespace RPLidarSerial
         /// Todo: Implement Command with Payload and Checksum.
         /// </summary>
         /// <param name="Command"></param>
-        public iRPLidarResponse SendCommand(RPLidar4Net.Core.Api.Command command)
+        public IResponse SendCommand(RPLidar4Net.Core.Api.Command command)
         {
             if (_isConnected)
             {
@@ -180,7 +180,7 @@ namespace RPLidarSerial
                 _serialPort.Write(cmdBytes, 0, cmdBytes.Length);
 
                 //Handle Command Response, reponse format is dependent on command type
-                iRPLidarResponse DataResponse = null;
+                IResponse DataResponse = null;
                 //We must sleep after executing some commands
                 bool sleep = false;
                 switch(command)
@@ -221,7 +221,7 @@ namespace RPLidarSerial
                 if (DataResponse != null)
                 {
                     //Read Command Header Response
-                    iRPLidarResponse hdrType = new Response_Command();
+                    IResponse hdrType = new Response_Command();
                     //Poll for data and parse response for the CMD
                     hdrType.parseData(Reponse(1000, hdrType));
 
@@ -399,7 +399,7 @@ namespace RPLidarSerial
         /// </summary>
         /// <param name="timeout">Timeout in milliseconds</param>
         /// <returns></returns>
-        public byte[] Reponse(int timeout, iRPLidarResponse ResponseType)
+        public byte[] Reponse(int timeout, IResponse ResponseType)
         {
             //Receive buffer
             byte[] data = new byte[ResponseType.Length];
