@@ -71,19 +71,19 @@ namespace RPLidarSerialSimpleConnect
             }
 
 
-            if (Frames.Count > 1)
-            {
-                string chrono = DateTime.Now.ToString("yyMMdd HHmm");
-                var filePath = $@"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\Scan Data\SlamtecRobopeakLidar\{chrono}.txt";
+            //if (Frames.Count > 1)
+            //{
+            //    string chrono = DateTime.Now.ToString("yyMMdd HHmm");
+            //    var filePath = $@"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\Scan Data\SlamtecRobopeakLidar\{chrono}.txt";
 
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
-                {
-                    foreach (Response_PointFormat _frame in Frames)
-                    {
-                        file.WriteLine($"{_frame.AngleDegrees.ToString(_cultureInfo)} {_frame.Distance.ToString(_cultureInfo)} {_frame.SyncQuality}");
-                    }
-                }
-            }
+            //    using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
+            //    {
+            //        foreach (Response_PointFormat _frame in Frames)
+            //        {
+            //            file.WriteLine($"{_frame.AngleDegrees.ToString(_cultureInfo)} {_frame.Distance.ToString(_cultureInfo)} {_frame.SyncQuality}");
+            //        }
+            //    }
+            //}
 
         }
 
