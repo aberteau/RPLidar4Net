@@ -89,8 +89,8 @@ namespace RPLidarSerial.RPLidar
         public bool IsValid()
         {
             //Check Validity
-            if (this.SyncByte1 != (byte)Protocol.RPLIDAR_ANS_SYNC_BYTE1 ||
-                this.SyncByte2 != (byte)Protocol.RPLIDAR_ANS_SYNC_BYTE2)
+            if (this.SyncByte1 != Constants.SYNC_BYTE1 ||
+                this.SyncByte2 != Constants.SYNC_BYTE2)
             {
                 return false;
             }

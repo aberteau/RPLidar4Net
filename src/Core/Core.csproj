@@ -6,4 +6,14 @@
     <RootNamespace>RPLidar4Net.Core</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="IO\**" />
+    <EmbeddedResource Remove="IO\**" />
+    <None Remove="IO\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="4.7.0" />
+  </ItemGroup>
+
 </Project>

@@ -24,13 +24,7 @@ namespace RPLidarSerial.RPLidar
         RESULT_INSUFFICIENT_MEMORY    = (0x8006 | RESULT_FAIL_BIT),
 
     }
-    public enum Protocol : uint
-    {
-        RPLIDAR_CMD_SYNC_BYTE = 0xA5,
-        RPLIDAR_CMDFLAG_HAS_PAYLOAD = 0x80,
-        RPLIDAR_ANS_SYNC_BYTE1 = 0xA5,
-        RPLIDAR_ANS_SYNC_BYTE2 = 0x5A,
-    }
+
     public enum Calibration
     {
         RPLIDAR_RESP_MEASUREMENT_SYNCBIT        = (0x1<<0),
@@ -51,12 +45,4 @@ namespace RPLidarSerial.RPLidar
         RPLIDAR_STATUS_WARNING = 0x1,
         RPLIDAR_STATUS_ERROR = 0x2,
     }
-    public static class Command
-    {
-        public static byte[] GetBytes(uint sync_byte, uint command_byte)
-        {
-            return new byte[] { (byte)sync_byte, (byte)command_byte };
-        }
-    }
-
 }
