@@ -8,7 +8,7 @@ namespace RPLidarSerial.RPLidar
     /// <summary>
     /// Health Response
     /// </summary>
-    public class Response_Health : IResponse
+    public class HealthResponse : IResponse
     {
         /// <summary>
         /// Total Message Bytes

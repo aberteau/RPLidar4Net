@@ -190,7 +190,7 @@ namespace RPLidarSerial
                         //Reponses are handled in the Scanning thread
                         break;
                     case RPLidar4Net.Core.Api.Command.GetHealth:
-                        DataResponse = new Response_Health();
+                        DataResponse = new HealthResponse();
                         break;
                     case RPLidar4Net.Core.Api.Command.GetInfo:
                         DataResponse = new Response_Information();
@@ -276,9 +276,9 @@ namespace RPLidarSerial
         /// <summary>
         /// Get Device Health Status
         /// </summary>
-        public Response_Health GetDeviceHealth()
+        public HealthResponse GetDeviceHealth()
         {
-            return (Response_Health)this.SendCommand(RPLidar4Net.Core.Api.Command.GetHealth);
+            return (HealthResponse)this.SendCommand(RPLidar4Net.Core.Api.Command.GetHealth);
         }
         /// <summary>
         /// Force Start Scanning
