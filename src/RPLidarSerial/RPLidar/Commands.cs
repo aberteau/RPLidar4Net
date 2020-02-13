@@ -10,19 +10,6 @@ using System.Text;
 
 namespace RPLidarSerial.RPLidar
 {
-    public enum Commands : uint
-    {
-        // Commands without payload and response
-        RPLIDAR_CMD_STOP = 0x25,
-        RPLIDAR_CMD_SCAN = 0x20,
-        RPLIDAR_CMD_FORCE_SCAN = 0x21,
-        RPLIDAR_CMD_RESET = 0x40,
-
-        // Commands without payload but have response
-        RPLIDAR_CMD_GET_DEVICE_INFO = 0x50,
-        RPLIDAR_CMD_GET_DEVICE_HEALTH = 0x52,
-    }
-
     public enum Result : uint
     {
         RESULT_OK               = 0,
