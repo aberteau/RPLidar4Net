@@ -398,29 +398,10 @@ namespace RPLidarSerial
         /// <returns></returns>
         public byte[] Reponse(int timeout, int responseLength)
         {
-            //Receive buffer
-            byte[] data = new byte[responseLength];
-
             try
             {
-                //Wait for buffer to fill
-                DateTime time = DateTime.Now;
-
-                //Make sure we dont run longer than specified timeout
-                while ((DateTime.Now - time).TotalMilliseconds < timeout)
-                {
-                    //Do we have enough bytes?
-                    if (_serialPort.BytesToRead < responseLength)
-                    {
-                        Thread.Sleep(10);
-                    }
-                    else
-                    {
-                        //Read 'em
-                        _serialPort.Read(data, 0, responseLength);
-                        return data;
-                    }
-                }
+                byte[] data = _serialPort.Read(responseLength, timeout);
+                return data;
             }
             catch
             {
@@ -428,9 +409,11 @@ namespace RPLidarSerial
                 this._isConnected = false;
                 //Then go through the motions
                 this.Disconnect();
+
+                return new byte[0];
             }
-            return data;
         }
+
         private byte[] waitPoint(int timeout)
         {
             DateTime _startTime = DateTime.Now;
