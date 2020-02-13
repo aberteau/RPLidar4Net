@@ -220,10 +220,10 @@ namespace RPLidarSerial
                     //Read Command Header Response
                     IResponse hdrType = new CommandResponse();
                     //Poll for data and parse response for the CMD
-                    hdrType.parseData(Reponse(1000, hdrType));
+                    hdrType.parseData(Reponse(1000, hdrType.Length));
 
                     //Poll for the command data and parse response
-                    DataResponse.parseData(Reponse(1000, DataResponse));
+                    DataResponse.parseData(Reponse(1000, DataResponse.Length));
 
                     return DataResponse;
                 }
@@ -396,26 +396,28 @@ namespace RPLidarSerial
         /// </summary>
         /// <param name="timeout">Timeout in milliseconds</param>
         /// <returns></returns>
-        public byte[] Reponse(int timeout, IResponse ResponseType)
+        public byte[] Reponse(int timeout, int responseLength)
         {
             //Receive buffer
-            byte[] data = new byte[ResponseType.Length];
-            //Wait for buffer to fill
-            DateTime time = DateTime.Now;
+            byte[] data = new byte[responseLength];
+
             try
             {
+                //Wait for buffer to fill
+                DateTime time = DateTime.Now;
+
                 //Make sure we dont run longer than specified timeout
                 while ((DateTime.Now - time).TotalMilliseconds < timeout)
                 {
                     //Do we have enough bytes?
-                    if (_serialPort.BytesToRead < ResponseType.Length)
+                    if (_serialPort.BytesToRead < responseLength)
                     {
                         Thread.Sleep(10);
                     }
                     else
                     {
                         //Read 'em
-                        _serialPort.Read(data, 0, ResponseType.Length);
+                        _serialPort.Read(data, 0, responseLength);
                         return data;
                     }
                 }
