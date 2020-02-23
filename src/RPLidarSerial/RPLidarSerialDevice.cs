@@ -44,13 +44,17 @@ namespace RPLidarSerial
         {
             get { return _isConnected; }
         }
-        /// <summary>
-        /// Get the current estimated motorspeed
-        /// </summary>
         public double MotorSpeed
         {
-            get { return _motorSpeed; }
+            get => _motorSpeed;
+            set
+            {
+                _motorSpeed = value;
+                RaiseMotorSpeedChanged();
+            }
         }
+
+        public event EventHandler MotorSpeedChanged;
 
         private string _serialNo { get; set; }
         public string SerialNumber
@@ -62,28 +66,28 @@ namespace RPLidarSerial
         /// Verbose output
         /// </summary>
         public bool Verbose { get; set; }
+
+        private void RaiseMotorSpeedChanged()
+        {
+            MotorSpeedChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         /// <summary>
         /// Scanning Thread
         /// </summary>
         private Thread _scanThread = null;
-        /// <summary>
-        /// Single scan result, full revolution
-        /// </summary>
-        private List<MeasurementNode> Frame = new List<MeasurementNode>();
-        /// <summary>
-        /// List of Scan Frames
-        /// </summary>
-        private List<List<MeasurementNode>> _Frames = new List<List<MeasurementNode>>();
-        /// <summary>
-        /// Gets or Sets Frame sets
-        /// </summary>
-        public List<List<MeasurementNode>> Frames { get { return _Frames; } set { _Frames = value; } }
-        /// <summary>
-        /// Data Events
-        /// </summary>
-        /// <param name="Frame"></param>
-        public delegate void DataHandler(List<MeasurementNode> Frame);
-        public event DataHandler Data; 
+
+        public event EventHandler<NewScanEventArgs> NewScan;
+
+        private void RaiseNewScan(IEnumerable<MeasurementNode> nodes)
+        {
+            if (NewScan != null)
+            {
+                NewScanEventArgs eventArgs = new NewScanEventArgs(nodes);
+                NewScan.Invoke(this, eventArgs);
+            }
+        }
+
         /// <summary>
         /// Robo Peak Lidar 360 Scanner, serial connection
         /// </summary>
@@ -135,7 +139,7 @@ namespace RPLidarSerial
                 {
                     StopScan();
                 }
-               
+
                 _serialPort.Close();
                 this._isConnected = false;
             }
@@ -147,7 +151,7 @@ namespace RPLidarSerial
         {
             if (_serialPort != null)
             {
-                 if (_isConnected)
+                if (_isConnected)
                 {
                     Disconnect();
                 }
@@ -204,9 +208,9 @@ namespace RPLidarSerial
                         DataResponse = null;
                         break;
                 }
-                
+
                 //We must sleep after executing some commands
-                if (sleep) { 
+                if (sleep) {
                     Thread.Sleep(20);
                 }
                 //Read additional data if any
@@ -263,7 +267,7 @@ namespace RPLidarSerial
         public InformationResponse GetDeviceInfo()
         {
             return (InformationResponse)this.SendRequest(Command.GetInfo);
-            
+
         }
         /// <summary>
         /// Get Device Health Status
@@ -344,40 +348,37 @@ namespace RPLidarSerial
         /// </summary>
         public void ScanThread()
         {
-            DateTime _LastSyncBit = new DateTime();
-            //Make some room for a measurement
-            
+            DateTime lastStartFlagDateTime = new DateTime();
+            IList<MeasurementNode> nodes = new List<MeasurementNode>();
+
             //Loop while we're scanning
             while (this._isScanning)
             {
-                byte[] bytes = ReadScanDataResponseBytes(1000);
-                MeasurementNode measurementNode = MeasurementNodeHelper.ToNode(bytes);
+                ScanDataResponse scanDataResponse = ReadScanDataResponse(1000);
+                MeasurementNode measurementNode = MeasurementNodeHelper.ToNode(scanDataResponse);
 
-                //measurementType.parseData(Reponse(1000, (iRPLidarResponse)measurementType));
                 //Check for new 360 degree scan bit
                 if (measurementNode.StartFlag)
                 {
-                    _motorSpeed = (1 / (DateTime.Now - _LastSyncBit).TotalSeconds)*60;
-                    _LastSyncBit = DateTime.Now;
-                    //New Frame
-                    _Frames.Add(Frame);
-                    if (Data != null)
-                    {
-                        //Publish new frame
-                        Data(Frame);
-                    }
-                    //Keep it below 10 frames
-                    if (_Frames.Count > 10) { _Frames.RemoveAt(0); }
-                    //Start a new Frame list
-                    Frame = new List<MeasurementNode>();
-                    if (Verbose)
-                        Console.WriteLine(":: Syncbit, last # of valid measurements: " + _Frames[_Frames.Count-1].Count);
+                    MotorSpeed = (1 / (DateTime.Now - lastStartFlagDateTime).TotalSeconds) * 60;
+                    lastStartFlagDateTime = DateTime.Now;
+
+                    RaiseNewScan(nodes);
+
+                    nodes = new List<MeasurementNode>();
                 }
 
-                //Dont collect invalid data
-                if(measurementNode.IsValid)
-                    Frame.Add(measurementNode);
+                if (measurementNode.IsValid)
+                    nodes.Add(measurementNode);
             }
+        }
+
+
+        private ScanDataResponse ReadScanDataResponse(int timeout)
+        {
+            byte[] bytes = ReadScanDataResponseBytes(timeout);
+            ScanDataResponse scanDataResponse = ScanDataResponseHelper.ToScanDataResponse(bytes);
+            return scanDataResponse;
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace RPLidarSerialSimpleConnect
                 //Get Device Health
                 RPLidar.GetDeviceHealth();
                 //Get Data Event
-                RPLidar.Data += RPLidar_Data;
+                RPLidar.NewScan += RPLidar_NewScan;
                 //Start Scan Thread
                 RPLidar.StartScan();
             }
@@ -58,9 +58,9 @@ namespace RPLidarSerialSimpleConnect
             RPLidar.Dispose();
         }
 
-        static void RPLidar_Data(IEnumerable<MeasurementNode> measurementNodes)
+        private static void RPLidar_NewScan(object sender, NewScanEventArgs eventArgs)
         {
-            //Handle data here
+            MeasurementNode[] measurementNodes = eventArgs.Nodes.ToArray();
             foreach(MeasurementNode measurementNode in measurementNodes)
             {
                 Console.WriteLine("Distance: " + measurementNode.Distance + " Angle: " + measurementNode.Angle);

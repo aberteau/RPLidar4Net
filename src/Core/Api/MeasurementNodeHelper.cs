@@ -14,12 +14,5 @@ namespace RPLidar4Net.Core.Api
             measurementNode.StartFlag = (startFlag == 1);
             return measurementNode;
         }
-
-        public static MeasurementNode ToNode(byte[] bytes)
-        {
-            ScanDataResponse scanDataResponse = ScanDataResponseHelper.ToScanDataResponse(bytes);
-            MeasurementNode measurementNode = ToNode(scanDataResponse);
-            return measurementNode;
-        }
     }
 }
