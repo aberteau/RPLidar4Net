@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using RPLidar4Net.Core;
 using System.Windows.Shapes;
+using RPLidar4Net.Core.Api;
+using RPLidarSerial;
+using RPLidarSerial.RPLidar;
 
 namespace RPLidar4Net.WpfApp
 {
@@ -18,9 +22,57 @@ namespace RPLidar4Net.WpfApp
         private const string Path = @"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\Scan Data\SlamtecRobopeakLidar\200213 0033.txt";
         private System.Drawing.PointF _origin;
 
+        static RPLidarSerialDevice _rpLidar;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            //StartScan();
+        }
+
+        private void StartScan()
+        {
+            _rpLidar = new RPLidarSerialDevice("com3");
+            //Connect RPLidar
+            _rpLidar.Connect();
+            //Reset - Not really sure how this is supposed to work, reconnecting USB works too
+            //RPLidar.Reset();
+            //Stop motor
+            _rpLidar.StopMotor();
+            //Get Device Information
+            InformationResponse responseInformation = _rpLidar.GetDeviceInfo();
+            //Get Device Health
+            _rpLidar.GetDeviceHealth();
+            //Get Data Event
+            _rpLidar.NewScan += RPLidar_NewScan;
+            //Start Scan Thread
+            _rpLidar.StartScan();
+        }
+
+        private void RPLidar_NewScan(object sender, NewScanEventArgs eventArgs)
+        {
+            Application.Current.Dispatcher.Invoke(() => UpdateCanvas(eventArgs));
+        }
+
+        private void UpdateCanvas(NewScanEventArgs eventArgs)
+        {
+            MeasurementNode[] measurementNodes = eventArgs.Nodes.ToArray();
+            if (measurementNodes.Any())
+            {
+                mainCanvas.Children.Clear();
+                DrawOriginEllipse();
+                DrawNodeEllipses(measurementNodes);
+            }
+        }
+
+        private void DrawNodeEllipses(MeasurementNode[] measurementNodes)
+        {
+            foreach (MeasurementNode measurementNode in measurementNodes)
+            {
+                System.Drawing.PointF pointF = PointHelper.ToPointF(_origin, measurementNode.Angle, measurementNode.Distance);
+                DrawEllipse(pointF, Colors.Black);
+            }
         }
 
         private void DrawOriginEllipse()
