@@ -59,10 +59,6 @@ namespace RPLidarSerial
         }
 
         /// <summary>
-        /// Writes out scanned coordinates to console
-        /// </summary>
-        public bool WriteOutCoordinates { get; set; }
-        /// <summary>
         /// Verbose output
         /// </summary>
         public bool Verbose { get; set; }
@@ -73,20 +69,20 @@ namespace RPLidarSerial
         /// <summary>
         /// Single scan result, full revolution
         /// </summary>
-        private List<PointFormatResponse> Frame = new List<PointFormatResponse>();
+        private List<MeasurementNode> Frame = new List<MeasurementNode>();
         /// <summary>
         /// List of Scan Frames
         /// </summary>
-        private List<List<PointFormatResponse>> _Frames = new List<List<PointFormatResponse>>();
+        private List<List<MeasurementNode>> _Frames = new List<List<MeasurementNode>>();
         /// <summary>
         /// Gets or Sets Frame sets
         /// </summary>
-        public List<List<PointFormatResponse>> Frames { get { return _Frames; } set { _Frames = value; } }
+        public List<List<MeasurementNode>> Frames { get { return _Frames; } set { _Frames = value; } }
         /// <summary>
         /// Data Events
         /// </summary>
         /// <param name="Frame"></param>
-        public delegate void DataHandler(List<PointFormatResponse> Frame);
+        public delegate void DataHandler(List<MeasurementNode> Frame);
         public event DataHandler Data; 
         /// <summary>
         /// Robo Peak Lidar 360 Scanner, serial connection
@@ -96,7 +92,6 @@ namespace RPLidarSerial
         /// <param name="timeout"></param>
         public RPLidarSerialDevice(string portname = "com4", int baudate = 115200, int timeout = 1000)
         {
-            this.WriteOutCoordinates = false;
             // Create a new SerialPort
             _serialPort = new SerialPort();
             _serialPort.PortName = portname;
@@ -351,20 +346,17 @@ namespace RPLidarSerial
         {
             DateTime _LastSyncBit = new DateTime();
             //Make some room for a measurement
-            PointFormatResponse measurementType = null;
-            //Start writing output (for piping to csv)
-            if (WriteOutCoordinates)
-                Console.WriteLine("X:Y");
+            
             //Loop while we're scanning
             while (this._isScanning)
             {
                 //Init Point format
-                measurementType = new PointFormatResponse();
-                //Poll for data and parse response
-                measurementType.parseData(waitPoint(1000));
+                byte[] bytes = waitPoint(1000);
+                MeasurementNode measurementNode = MeasurementNodeHelper.ToNode(bytes);
+
                 //measurementType.parseData(Reponse(1000, (iRPLidarResponse)measurementType));
                 //Check for new 360 degree scan bit
-                if (measurementType.MeasurementNode.StartFlag)
+                if (measurementNode.StartFlag)
                 {
                     _motorSpeed = (1 / (DateTime.Now - _LastSyncBit).TotalSeconds)*60;
                     _LastSyncBit = DateTime.Now;
@@ -378,16 +370,14 @@ namespace RPLidarSerial
                     //Keep it below 10 frames
                     if (_Frames.Count > 10) { _Frames.RemoveAt(0); }
                     //Start a new Frame list
-                    Frame = new List<PointFormatResponse>();
+                    Frame = new List<MeasurementNode>();
                     if (Verbose)
                         Console.WriteLine(":: Syncbit, last # of valid measurements: " + _Frames[_Frames.Count-1].Count);
                 }
 
-                if (WriteOutCoordinates)
-                    Console.WriteLine("{0}:{1}",measurementType.X.ToString(), measurementType.Y.ToString());
                 //Dont collect invalid data
-                if(measurementType.IsValid)
-                    Frame.Add(measurementType);
+                if(measurementNode.IsValid)
+                    Frame.Add(measurementNode);
             }
         }
 

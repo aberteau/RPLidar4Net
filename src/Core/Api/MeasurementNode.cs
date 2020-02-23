@@ -23,5 +23,7 @@ namespace RPLidar4Net.Core.Api
         /// New 360 degree scan indicator
         /// </summary>
         public bool StartFlag { get; set; }
+
+        public bool IsValid => Distance > 0f;
     }
 }

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.IO.Ports;
-using System.Threading;
+using RPLidar4Net.Core.Api;
 using RPLidarSerial.RPLidar;
 using RPLidarSerial;
 
@@ -23,7 +21,6 @@ namespace RPLidarSerialSimpleConnect
             RPLidar = new RPLidarSerialDevice("com6");
             //Set output parameters
             RPLidar.Verbose = false;
-            RPLidar.WriteOutCoordinates = false;
             try
             {
                 //Connect RPLidar
@@ -61,26 +58,25 @@ namespace RPLidarSerialSimpleConnect
             RPLidar.Dispose();
         }
 
-        static void RPLidar_Data(List<PointFormatResponse> Frames)
+        static void RPLidar_Data(IEnumerable<MeasurementNode> measurementNodes)
         {
             //Handle data here
-            foreach(PointFormatResponse _frame in Frames)
+            foreach(MeasurementNode measurementNode in measurementNodes)
             {
-                Console.WriteLine("Distance: " + _frame.MeasurementNode.Distance.ToString() + " Angle: " + _frame.MeasurementNode.Angle.ToString());
-                Console.WriteLine("X: " + _frame.X.ToString() + " Y: " + _frame.Y.ToString());
+                Console.WriteLine("Distance: " + measurementNode.Distance + " Angle: " + measurementNode.Angle);
             }
 
 
-            //if (Frames.Count > 1)
+            //if (measurementNodes.Any())
             //{
             //    string chrono = DateTime.Now.ToString("yyMMdd HHmm");
             //    var filePath = $@"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\Scan Data\SlamtecRobopeakLidar\{chrono}.txt";
 
             //    using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
             //    {
-            //        foreach (PointFormatResponse _frame in Frames)
+            //        foreach (MeasurementNode measurementNode in measurementNodes)
             //        {
-            //            file.WriteLine($"{_frame.MeasurementNode.Angle.ToString(_cultureInfo)} {_frame.MeasurementNode.Distance.ToString(_cultureInfo)} {_frame.MeasurementNode.Quality}");
+            //            file.WriteLine($"{measurementNode.Angle.ToString(_cultureInfo)} {measurementNode.Distance.ToString(_cultureInfo)} {measurementNode.Quality}");
             //        }
             //    }
             //}
