@@ -44,8 +44,8 @@ namespace RPLidar4Net.Core
 
         public static PointF ToPointF(PointF origin, float angle, float distance)
         {
-            double dblX = origin.X + Math.Cos(DegreeToRadian(angle)) * distance;
-            double dblY = origin.Y + Math.Sin(DegreeToRadian(angle)) * distance;
+            double dblX = origin.X + Math.Sin(DegreeToRadian(angle)) * distance;
+            double dblY = origin.Y + Math.Cos(DegreeToRadian(angle)) * - distance;
 
             float x = Convert.ToSingle(dblX);
             float y = Convert.ToSingle(dblY);
