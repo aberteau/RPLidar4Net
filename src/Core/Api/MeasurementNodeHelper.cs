@@ -17,14 +17,9 @@ namespace RPLidar4Net.Core.Api
 
         public static MeasurementNode ToNode(byte[] bytes)
         {
-
-            if (bytes.Length < Constants.ScanDataResponseLength)
-                throw new Exception("RESULT_INVALID_ANS_TYPE");
-
-            ScanDataResponse scanDataResponse = new ScanDataResponse(bytes);
+            ScanDataResponse scanDataResponse = ScanDataResponseHelper.ToScanDataResponse(bytes);
             MeasurementNode measurementNode = ToNode(scanDataResponse);
             return measurementNode;
-
         }
     }
 }
