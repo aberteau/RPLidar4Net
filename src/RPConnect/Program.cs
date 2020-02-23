@@ -66,7 +66,7 @@ namespace RPLidarSerialSimpleConnect
             //Handle data here
             foreach(PointFormatResponse _frame in Frames)
             {
-                Console.WriteLine("Distance: " + _frame.Distance.ToString() + " Angle: " + _frame.AngleDegrees.ToString());
+                Console.WriteLine("Distance: " + _frame.MeasurementNode.Distance.ToString() + " Angle: " + _frame.MeasurementNode.Angle.ToString());
                 Console.WriteLine("X: " + _frame.X.ToString() + " Y: " + _frame.Y.ToString());
             }
 
@@ -80,7 +80,7 @@ namespace RPLidarSerialSimpleConnect
             //    {
             //        foreach (PointFormatResponse _frame in Frames)
             //        {
-            //            file.WriteLine($"{_frame.AngleDegrees.ToString(_cultureInfo)} {_frame.Distance.ToString(_cultureInfo)} {_frame.SyncQuality}");
+            //            file.WriteLine($"{_frame.MeasurementNode.Angle.ToString(_cultureInfo)} {_frame.MeasurementNode.Distance.ToString(_cultureInfo)} {_frame.MeasurementNode.Quality}");
             //        }
             //    }
             //}

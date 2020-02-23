@@ -364,7 +364,7 @@ namespace RPLidarSerial
                 measurementType.parseData(waitPoint(1000));
                 //measurementType.parseData(Reponse(1000, (iRPLidarResponse)measurementType));
                 //Check for new 360 degree scan bit
-                if (measurementType.CheckBit)
+                if (measurementType.MeasurementNode.StartFlag)
                 {
                     _motorSpeed = (1 / (DateTime.Now - _LastSyncBit).TotalSeconds)*60;
                     _LastSyncBit = DateTime.Now;

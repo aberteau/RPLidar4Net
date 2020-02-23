@@ -73,6 +73,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{73F94748-4298-4522-916E-C37D691657E0}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RPLidarSerial\RPLidarSerial.csproj">
       <Project>{33183fdb-4de1-475c-93df-60e1139bd975}</Project>
       <Name>RPLidarSerial</Name>

@@ -27,10 +27,7 @@ namespace RPLidarSerial.RPLidar
 
     public enum Calibration
     {
-        RPLIDAR_RESP_MEASUREMENT_SYNCBIT        = (0x1<<0),
-        RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT  = 2,
-        RPLIDAR_RESP_MEASUREMENT_CHECKBIT       = (0x1<<0),
-        RPLIDAR_RESP_MEASUREMENT_ANGLE_SHIFT    = 1,
+        RPLIDAR_RESP_MEASUREMENT_CHECKBIT       = (0x1<<0)
     }
     public enum ReponseType
     {
