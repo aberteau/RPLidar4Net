@@ -69,7 +69,7 @@ namespace RPLidarSerialSimpleConnect
 
             //if (measurementNodes.Any())
             //{
-            //    string chrono = DateTime.Now.ToString("yyMMdd HHmm");
+            //    string chrono = DateTime.Now.ToString("yyMMdd HHmmss fff");
             //    var filePath = $@"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\Scan Data\SlamtecRobopeakLidar\{chrono}.txt";
 
             //    using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
