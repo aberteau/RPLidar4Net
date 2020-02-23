@@ -350,8 +350,7 @@ namespace RPLidarSerial
             //Loop while we're scanning
             while (this._isScanning)
             {
-                //Init Point format
-                byte[] bytes = waitPoint(1000);
+                byte[] bytes = ReadScanDataResponseBytes(1000);
                 MeasurementNode measurementNode = MeasurementNodeHelper.ToNode(bytes);
 
                 //measurementType.parseData(Reponse(1000, (iRPLidarResponse)measurementType));
@@ -405,10 +404,10 @@ namespace RPLidarSerial
             }
         }
 
-        private byte[] waitPoint(int timeout)
+        private byte[] ReadScanDataResponseBytes(int timeout)
         {
             DateTime _startTime = DateTime.Now;
-            byte[] nodebuf = new byte[5];
+            byte[] nodebuf = new byte[Constants.ScanDataResponseLength];
             int recvPos = 0;
             try
             {
