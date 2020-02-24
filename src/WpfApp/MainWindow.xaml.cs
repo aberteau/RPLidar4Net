@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using RPLidar4Net.Core;
 using System.Windows.Shapes;
-using RPLidar4Net.Core.Api;
 using RPLidarSerial;
 using RPLidarSerial.RPLidar;
 
@@ -58,20 +56,21 @@ namespace RPLidar4Net.WpfApp
 
         private void UpdateCanvas(NewScanEventArgs eventArgs)
         {
-            MeasurementNode[] measurementNodes = eventArgs.Nodes.ToArray();
-            if (measurementNodes.Any())
-            {
-                mainCanvas.Children.Clear();
-                DrawOriginEllipse();
-                DrawNodeEllipses(measurementNodes);
-            }
+            UpdateCanvas(eventArgs.Points);
         }
 
-        private void DrawNodeEllipses(MeasurementNode[] measurementNodes)
+        private void UpdateCanvas(IEnumerable<Core.Point> points)
         {
-            foreach (MeasurementNode measurementNode in measurementNodes)
+            mainCanvas.Children.Clear();
+            DrawOriginEllipse();
+            DrawEllipses(points);
+        }
+
+        private void DrawEllipses(IEnumerable<Core.Point> points)
+        {
+            foreach (Core.Point point in points)
             {
-                System.Drawing.PointF pointF = PointHelper.ToPointF(_origin, Rotation, measurementNode.Angle, measurementNode.Distance);
+                System.Drawing.PointF pointF = PointHelper.ToPointF(_origin, Rotation, point);
                 DrawEllipse(pointF, Colors.Black);
             }
         }
@@ -83,16 +82,6 @@ namespace RPLidar4Net.WpfApp
             _origin = new System.Drawing.PointF(originX, originY);
 
             DrawEllipse(_origin, Colors.Red);
-        }
-
-        private async Task LoadDataAsync()
-        {
-            IEnumerable<Core.Point> points = await PointHelper.ReadPointsAsync(Path);
-            foreach (Core.Point point in points)
-            {
-                System.Drawing.PointF pointF = PointHelper.ToPointF(_origin, Rotation, point.Angle, point.Distance);
-                DrawEllipse(pointF, Colors.Black);
-            }
         }
 
         private void DrawEllipse(System.Drawing.PointF pointF, Color color)
@@ -108,11 +97,10 @@ namespace RPLidar4Net.WpfApp
             mainCanvas.Children.Add(ellipse);
         }
 
-        private void OnButtonClick(object sender, RoutedEventArgs e)
+        private async void OnButtonClick(object sender, RoutedEventArgs e)
         {
-            mainCanvas.Children.Clear();
-            DrawOriginEllipse();
-            LoadDataAsync();
+            IEnumerable<Core.Point> points = await PointHelper.ReadPointsAsync(Path);
+            UpdateCanvas(points);
         }
     }
 }

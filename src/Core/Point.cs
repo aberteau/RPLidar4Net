@@ -18,5 +18,12 @@ namespace RPLidar4Net.Core
         /// Quality of the measurement
         /// </summary>
         public Int32 Quality { get; set; }
+
+        /// <summary>
+        /// New 360 degree scan indicator
+        /// </summary>
+        public bool StartFlag { get; set; }
+
+        public bool IsValid => Distance > 0f;
     }
 }

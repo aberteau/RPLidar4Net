@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using RPLidar4Net.Core.Api;
+using RPLidar4Net.Core;
 using RPLidarSerial.RPLidar;
 using RPLidarSerial;
 
@@ -60,23 +59,23 @@ namespace RPLidarSerialSimpleConnect
 
         private static void RPLidar_NewScan(object sender, NewScanEventArgs eventArgs)
         {
-            MeasurementNode[] measurementNodes = eventArgs.Nodes.ToArray();
-            foreach(MeasurementNode measurementNode in measurementNodes)
+            Point[] points = eventArgs.Points.ToArray();
+            foreach(Point point in points)
             {
-                Console.WriteLine("Distance: " + measurementNode.Distance + " Angle: " + measurementNode.Angle);
+                Console.WriteLine("Distance: " + point.Distance + " Angle: " + point.Angle);
             }
 
 
-            //if (measurementNodes.Any())
+            //if (points.Any())
             //{
             //    string chrono = DateTime.Now.ToString("yyMMdd HHmmss fff");
             //    var filePath = $@"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\Scan Data\SlamtecRobopeakLidar\{chrono}.txt";
 
             //    using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
             //    {
-            //        foreach (MeasurementNode measurementNode in measurementNodes)
+            //        foreach (Point point in points)
             //        {
-            //            file.WriteLine($"{measurementNode.Angle.ToString(_cultureInfo)} {measurementNode.Distance.ToString(_cultureInfo)} {measurementNode.Quality}");
+            //            file.WriteLine($"{point.Angle.ToString(_cultureInfo)} {point.Distance.ToString(_cultureInfo)} {point.Quality}");
             //        }
             //    }
             //}

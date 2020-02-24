@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using RPLidar4Net.Core.Api;
+using RPLidar4Net.Core;
 
 namespace RPLidarSerial
 {
     public class NewScanEventArgs : EventArgs
     {
-        public NewScanEventArgs(IEnumerable<MeasurementNode> nodes)
+        public NewScanEventArgs(IEnumerable<Point> points)
         {
-            Nodes = nodes;
+            Points = points;
         }
 
-        public IEnumerable<MeasurementNode> Nodes { get; }
+        public IEnumerable<Point> Points { get; }
     }
 }

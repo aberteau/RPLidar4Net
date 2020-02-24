@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
+using RPLidar4Net.Core;
 using RPLidar4Net.Core.Api;
 
 namespace RPLidarSerial
@@ -79,11 +80,11 @@ namespace RPLidarSerial
 
         public event EventHandler<NewScanEventArgs> NewScan;
 
-        private void RaiseNewScan(IEnumerable<MeasurementNode> nodes)
+        private void RaiseNewScan(IEnumerable<Point> points)
         {
             if (NewScan != null)
             {
-                NewScanEventArgs eventArgs = new NewScanEventArgs(nodes);
+                NewScanEventArgs eventArgs = new NewScanEventArgs(points);
                 NewScan.Invoke(this, eventArgs);
             }
         }
@@ -349,27 +350,27 @@ namespace RPLidarSerial
         public void ScanThread()
         {
             DateTime lastStartFlagDateTime = new DateTime();
-            IList<MeasurementNode> nodes = new List<MeasurementNode>();
+            IList<Point> points = new List<Point>();
 
             //Loop while we're scanning
             while (this._isScanning)
             {
                 ScanDataResponse scanDataResponse = ReadScanDataResponse(1000);
-                MeasurementNode measurementNode = MeasurementNodeHelper.ToNode(scanDataResponse);
+                Point point = ScanDataResponseHelper.ToPoint(scanDataResponse);
 
                 //Check for new 360 degree scan bit
-                if (measurementNode.StartFlag)
+                if (point.StartFlag)
                 {
                     MotorSpeed = (1 / (DateTime.Now - lastStartFlagDateTime).TotalSeconds) * 60;
                     lastStartFlagDateTime = DateTime.Now;
 
-                    RaiseNewScan(nodes);
+                    RaiseNewScan(points);
 
-                    nodes = new List<MeasurementNode>();
+                    points = new List<Point>();
                 }
 
-                if (measurementNode.IsValid)
-                    nodes.Add(measurementNode);
+                if (point.IsValid)
+                    points.Add(point);
             }
         }
 

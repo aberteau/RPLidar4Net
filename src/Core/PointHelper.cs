@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RPLidar4Net.Core
@@ -24,7 +23,8 @@ namespace RPLidar4Net.Core
         public static IEnumerable<Point> ToPoints(IEnumerable<String> lines)
         {
             IEnumerable<Point> points = lines.WhereIsPointDataLine().Select(l => ToPoint(l)).ToList();
-            return points;
+            IEnumerable<Point> list = points.Where(n => n != null).ToList();
+            return list;
         }
 
         public static Point ToPoint(String line)
@@ -42,15 +42,9 @@ namespace RPLidar4Net.Core
             return point;
         }
 
-        public static PointF ToPointF(PointF origin, float rotation, float angle, float distance)
+        public static PointF ToPointF(PointF origin, float rotation, Point point)
         {
-            double angleRadian = AngleHelper.DegreeToRadian(angle + rotation);
-            double dblX = origin.X + Math.Cos(angleRadian) *  distance;
-            double dblY = origin.Y + Math.Sin(angleRadian) * distance;
-
-            float x = Convert.ToSingle(dblX);
-            float y = Convert.ToSingle(dblY);
-            PointF pointF = new PointF(x, y);
+            PointF pointF = PointFHelper.ToPointF(origin, rotation, point.Angle, point.Distance);
             return pointF;
         }
     }
