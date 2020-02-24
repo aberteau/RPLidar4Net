@@ -87,8 +87,8 @@ namespace RPLidar4Net.WpfApp
         private void DrawEllipse(System.Drawing.PointF pointF, Color color)
         {
             Ellipse ellipse = new Ellipse();
-            ellipse.Width = 10;
-            ellipse.Height = 10;
+            ellipse.Width = 30;
+            ellipse.Height = 30;
             ellipse.Fill = new SolidColorBrush(color);
  
             Canvas.SetLeft(ellipse, pointF.X);
