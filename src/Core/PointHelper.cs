@@ -42,11 +42,11 @@ namespace RPLidar4Net.Core
             return point;
         }
 
-        public static PointF ToPointF(PointF origin, float angle, float distance)
+        public static PointF ToPointF(PointF origin, float rotation, float angle, float distance)
         {
-            double angleRadian = AngleHelper.DegreeToRadian(angle);
-            double dblX = origin.X + Math.Sin(angleRadian) * distance;
-            double dblY = origin.Y + Math.Cos(angleRadian) * - distance;
+            double angleRadian = AngleHelper.DegreeToRadian(angle + rotation);
+            double dblX = origin.X + Math.Cos(angleRadian) *  distance;
+            double dblY = origin.Y + Math.Sin(angleRadian) * distance;
 
             float x = Convert.ToSingle(dblX);
             float y = Convert.ToSingle(dblY);

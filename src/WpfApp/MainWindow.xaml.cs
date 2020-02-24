@@ -18,8 +18,9 @@ namespace RPLidar4Net.WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        //private const string Path = @"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\Scan Data\RoboStudio\200212 2347.txt";
-        private const string Path = @"F:\UserData\Amael\OneDrive\R&D\Lidar\RPLIDAR A1\Scan Data\SlamtecRobopeakLidar\200213 0033.txt";
+        //private const string Path = @"F:\UserData\Amael\OneDrive\Electronique\RPLIDAR A1\Scan Data\RoboStudio\200212 2347.txt";
+        private const string Path = @"F:\UserData\Amael\OneDrive\Electronique\RPLIDAR A1\Scan Data\SlamtecRobopeakLidar\200223 222514 396.txt";
+        private const int Rotation = -90;
         private System.Drawing.PointF _origin;
 
         static RPLidarSerialDevice _rpLidar;
@@ -70,7 +71,7 @@ namespace RPLidar4Net.WpfApp
         {
             foreach (MeasurementNode measurementNode in measurementNodes)
             {
-                System.Drawing.PointF pointF = PointHelper.ToPointF(_origin, measurementNode.Angle, measurementNode.Distance);
+                System.Drawing.PointF pointF = PointHelper.ToPointF(_origin, Rotation, measurementNode.Angle, measurementNode.Distance);
                 DrawEllipse(pointF, Colors.Black);
             }
         }
@@ -89,7 +90,7 @@ namespace RPLidar4Net.WpfApp
             IEnumerable<Core.Point> points = await PointHelper.ReadPointsAsync(Path);
             foreach (Core.Point point in points)
             {
-                System.Drawing.PointF pointF = PointHelper.ToPointF(_origin, point.Angle, point.Distance);
+                System.Drawing.PointF pointF = PointHelper.ToPointF(_origin, Rotation, point.Angle, point.Distance);
                 DrawEllipse(pointF, Colors.Black);
             }
         }
