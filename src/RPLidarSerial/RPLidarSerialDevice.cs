@@ -177,36 +177,36 @@ namespace RPLidarSerial
                 _serialPort.SendRequest(command);
 
                 //Handle Command Response, reponse format is dependent on command type
-                IResponse DataResponse = null;
+                IResponse response = null;
                 //We must sleep after executing some commands
                 bool sleep = false;
                 switch(command)
                 {
                     case Command.Scan:
-                        DataResponse = null;
+                        response = null;
                         //Reponses are handled in the Scanning thread
                         break;
                     case Command.GetHealth:
-                        DataResponse = new HealthResponse();
+                        response = new HealthResponse();
                         break;
                     case Command.GetInfo:
-                        DataResponse = new InformationResponse();
+                        response = new InformationResponse();
                         break;
                     case Command.Reset:
                         sleep = true;
-                        DataResponse = null;
+                        response = null;
                         break;
                     case Command.Stop:
                         sleep = true;
-                        DataResponse = null;
+                        response = null;
                         break;
                     case Command.ForceScan:
-                        DataResponse = null;
+                        response = null;
                         //Reponses are handled in the Scanning thread
                         //Use with care, returns results without motor rotation synchronization
                         break;
                     default:
-                        DataResponse = null;
+                        response = null;
                         break;
                 }
 
@@ -215,7 +215,7 @@ namespace RPLidarSerial
                     Thread.Sleep(20);
                 }
                 //Read additional data if any
-                if (DataResponse != null)
+                if (response != null)
                 {
                     //Read Command Header Response
                     IResponse hdrType = new CommandResponse();
@@ -223,9 +223,9 @@ namespace RPLidarSerial
                     hdrType.parseData(Read(hdrType.Length, 1000));
 
                     //Poll for the command data and parse response
-                    DataResponse.parseData(Read(DataResponse.Length, 1000));
+                    response.parseData(Read(response.Length, 1000));
 
-                    return DataResponse;
+                    return response;
                 }
             }
             return null;
