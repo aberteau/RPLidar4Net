@@ -2,6 +2,7 @@
 {
     public class Constants
     {
+        public const int ResponseDescriptorLength = 7;
         public const int ScanDataResponseLength = 5;
 
         public const byte RPLIDAR_RESP_MEASUREMENT_SYNCBIT = (0x1 << 0);

@@ -218,17 +218,23 @@ namespace RPLidarSerial
                 if (response != null)
                 {
                     //Read Command Header Response
-                    IResponse hdrType = new CommandResponse();
-                    //Poll for data and parse response for the CMD
-                    hdrType.parseData(Read(hdrType.Length, 1000));
+                    ResponseDescriptor responseDescriptor = ReadResponseDescriptor();
 
                     //Poll for the command data and parse response
-                    response.parseData(Read(response.Length, 1000));
+                    byte[] dataResponseBytes = Read(response.Length, 1000);
+                    response.parseData(dataResponseBytes);
 
                     return response;
                 }
             }
             return null;
+        }
+
+        private ResponseDescriptor ReadResponseDescriptor()
+        {
+            byte[] bytes = Read(Constants.ResponseDescriptorLength, 1000);
+            ResponseDescriptor responseDescriptor = ResponseDescriptorHelper.ToResponseDescriptor(bytes);
+            return responseDescriptor;
         }
 
         /// <summary>

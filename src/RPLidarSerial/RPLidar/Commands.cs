@@ -29,12 +29,6 @@ namespace RPLidarSerial.RPLidar
     {
         RPLIDAR_RESP_MEASUREMENT_CHECKBIT       = (0x1<<0)
     }
-    public enum ReponseType
-    {
-        RPLIDAR_ANS_TYPE_MEASUREMENT = 0x81,
-        RPLIDAR_ANS_TYPE_DEVINFO = 0x4,
-        RPLIDAR_ANS_TYPE_DEVHEALTH = 0x6,
-    }
 
     public enum StatusCode
     {
