@@ -7,7 +7,7 @@ namespace RPLidar4Net.Core
     public class BitHelper
     {
         public const int ByteLength = 8;
-        public const int UInt32Length = ByteLength * 4;
+        public const int UInt32Length = ByteLength * ByteHelper.UInt32Length;
 
         public static int GetBitLength(int byteCount)
         {
