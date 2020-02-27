@@ -6,9 +6,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using RPLidar4Net.Core;
 using System.Windows.Shapes;
+using RPLidar4Net.Core.Api;
 using RPLidarSerial;
-using RPLidarSerial.RPLidar;
-using Serilog;
 
 namespace RPLidar4Net.WpfApp
 {
@@ -41,9 +40,9 @@ namespace RPLidar4Net.WpfApp
             //Stop motor
             _rpLidar.StopMotor();
             //Get Device Information
-            InformationResponse responseInformation = _rpLidar.GetDeviceInfo();
+            InfoDataResponse infoDataResponse = _rpLidar.GetInfo();
             //Get Device Health
-            HealthResponse healthResponse = _rpLidar.GetDeviceHealth();
+            HealthDataResponse healthDataResponse = _rpLidar.GetHealth();
             //Get Data Event
             _rpLidar.NewScan += RPLidar_NewScan;
             //Start Scan Thread

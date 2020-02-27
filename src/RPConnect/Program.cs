@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using RPLidar4Net.Core;
+using RPLidar4Net.Core.Api;
 using RPLidarSerial.RPLidar;
 using RPLidarSerial;
 
@@ -29,9 +30,9 @@ namespace RPLidarSerialSimpleConnect
                 //Stop motor
                 RPLidar.StopMotor();
                 //Get Device Information
-                InformationResponse responseInformation = RPLidar.GetDeviceInfo();
+                InfoDataResponse responseInformation = RPLidar.GetInfo();
                 //Get Device Health
-                RPLidar.GetDeviceHealth();
+                RPLidar.GetHealth();
                 //Get Data Event
                 RPLidar.NewScan += RPLidar_NewScan;
                 //Start Scan Thread

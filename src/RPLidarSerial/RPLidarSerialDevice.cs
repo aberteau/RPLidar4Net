@@ -168,7 +168,7 @@ namespace RPLidarSerial
         /// Todo: Implement Command with Payload and Checksum.
         /// </summary>
         /// <param name="command"></param>
-        public IResponse SendRequest(Command command)
+        public IDataResponse SendRequest(Command command)
         {
             if (_isConnected)
             {
@@ -193,38 +193,30 @@ namespace RPLidarSerial
                 // Scan Responses are handled in the Scanning thread
                 if (responseDescriptor.DataType != DataType.Scan)
                 {
-                    IResponse response = ReadResponse(responseDescriptor.DataResponseLength, responseDescriptor.DataType);
+                    IDataResponse response = ReadResponse(responseDescriptor.DataResponseLength, responseDescriptor.DataType);
                     return response;
                 }
             }
             return null;
         }
 
-        private IResponse ReadResponse(uint dataResponseLength, DataType dataType)
+        private IDataResponse ReadResponse(uint dataResponseLength, DataType dataType)
         {
             byte[] dataResponseBytes = Read(dataResponseLength, 1000);
-            IResponse response = GetResponse(dataType, dataResponseBytes);
+            IDataResponse response = ToDataResponse(dataType, dataResponseBytes);
             return response;
         }
 
-        private static IResponse GetResponse(DataType dataType, byte[] dataResponseBytes)
-        {
-            IResponse response = GetResponse(dataType);
-            response?.parseData(dataResponseBytes);
-            return response;
-        }
-
-        private static IResponse GetResponse(DataType dataType)
+        private static IDataResponse ToDataResponse(DataType dataType, byte[] dataResponseBytes)
         {
             switch (dataType)
             {
                 case DataType.GetHealth:
-                    return new HealthResponse();
+                    return HealthDataResponseHelper.ToHealthDataResponse(dataResponseBytes);
 
                 case DataType.GetInfo:
-                    return new InformationResponse();
+                    return InfoDataResponseHelper.ToInfoDataResponse(dataResponseBytes);
             }
-
             return null;
         }
 
@@ -276,17 +268,17 @@ namespace RPLidarSerial
         /// Get Device Information
         /// Serial No. etc.
         /// </summary>
-        public InformationResponse GetDeviceInfo()
+        public InfoDataResponse GetInfo()
         {
-            return (InformationResponse)this.SendRequest(Command.GetInfo);
+            return (InfoDataResponse)this.SendRequest(Command.GetInfo);
 
         }
         /// <summary>
         /// Get Device Health Status
         /// </summary>
-        public HealthResponse GetDeviceHealth()
+        public HealthDataResponse GetHealth()
         {
-            return (HealthResponse)this.SendRequest(Command.GetHealth);
+            return (HealthDataResponse)this.SendRequest(Command.GetHealth);
         }
         /// <summary>
         /// Force Start Scanning
