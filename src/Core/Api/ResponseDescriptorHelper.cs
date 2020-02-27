@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace RPLidar4Net.Core.Api
 {
     public class ResponseDescriptorHelper
     {
-        private const int DataResponseLengthBitLength = 30;
+        private const int DataResponseLengthMask = 0x3FFFFFFF;
+        private const int SendModeShift = 30;
 
         public static ResponseDescriptor ToResponseDescriptor(byte[] data)
         {
@@ -24,59 +23,21 @@ namespace RPLidar4Net.Core.Api
                 throw new Exception("RESULT_INVALID_ANS_TYPE");
             }
 
-            byte[] dataResponseLengthAndSendModeBytes = data.Skip(2).Take(ByteHelper.UInt32Length).ToArray();
-            bool[] dataResponseLengthAndSendModeBoolArray = ByteConverter.ToBoolArray(dataResponseLengthAndSendModeBytes);
-
-            responseDescriptor.DataResponseLength = GetDataResponseLength(dataResponseLengthAndSendModeBoolArray);
-            responseDescriptor.SendMode = GetSendMode(dataResponseLengthAndSendModeBoolArray);
-            responseDescriptor.DataType = GetDataType(data[6]);
+            UInt32 dataResponseLengthAndSendModeBytes = BitConverter.ToUInt32(data,2);
+            Tuple<uint, SendMode> tuple = GetDataResponseLengthAndSendMode(dataResponseLengthAndSendModeBytes);
+            responseDescriptor.DataResponseLength = tuple.Item1;
+            responseDescriptor.SendMode = tuple.Item2;
+            responseDescriptor.DataType = (DataType)data[6];
 
             return responseDescriptor;
         }
 
-        private static SendMode GetSendMode(bool[] dataResponseLengthAndSendModeBoolArray)
+        public static Tuple<uint, SendMode> GetDataResponseLengthAndSendMode(uint dataResponseLengthAndSendMode)
         {
-            bool[] sendModeBoolArray = dataResponseLengthAndSendModeBoolArray.Skip(DataResponseLengthBitLength).Take(2).ToArray();
-            bool[] bArray = {false, false, false, false, false, false, sendModeBoolArray[0], sendModeBoolArray[1]};
-
-            byte sendModeByte = BoolConverter.ToByte(bArray);
-            SendMode sendMode = GetSendMode(sendModeByte);
-            return sendMode;
-        }
-
-        private static uint GetDataResponseLength(bool[] bArray)
-        {
-            bool[] dataResponseLengthBoolArray = bArray.Take(DataResponseLengthBitLength).ToArray();
-            uint dataResponseLength = BoolConverter.ToUInt32(dataResponseLengthBoolArray);
-            return dataResponseLength;
-        }
-
-        private static SendMode GetSendMode(byte b)
-        {
-            switch (b)
-            {
-                case (byte) SendMode.SingleRequestSingleResponse:
-                    return SendMode.SingleRequestSingleResponse;
-                case (byte) SendMode.SingleRequestMultipleResponse:
-                    return SendMode.SingleRequestMultipleResponse;
-            }
-
-            throw new Exception($"Unknown SendMode {b:X2}");
-        }
-
-        private static DataType GetDataType(byte b)
-        {
-            switch (b)
-            {
-                case (byte)DataType.GET_HEALTH:
-                    return DataType.GET_HEALTH;
-                case (byte)DataType.GET_INFO:
-                    return DataType.GET_INFO;
-                case (byte)DataType.SCAN:
-                    return DataType.SCAN;
-            }
-
-            throw new Exception($"Unknown DataType {b:X2}");
+            uint dataResponseLength = dataResponseLengthAndSendMode & DataResponseLengthMask;
+            SendMode sendMode = (SendMode)(dataResponseLengthAndSendMode >> SendModeShift);
+            Tuple<uint, SendMode> tuple = new Tuple<uint, SendMode>(dataResponseLength, sendMode);
+            return tuple;
         }
 
         /// <summary>
