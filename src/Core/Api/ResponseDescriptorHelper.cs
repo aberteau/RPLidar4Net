@@ -88,8 +88,8 @@ namespace RPLidar4Net.Core.Api
         public static bool IsValid(byte startFlag1, byte startFlag2)
         {
             //Check Validity
-            if (startFlag1 != Constants.SYNC_BYTE1 ||
-                startFlag2 != Constants.SYNC_BYTE2)
+            if (startFlag1 != Constants.StartFlag1 ||
+                startFlag2 != Constants.StartFlag2)
             {
                 return false;
             }

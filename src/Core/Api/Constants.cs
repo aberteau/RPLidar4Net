@@ -11,7 +11,7 @@
 
         public const byte SYNC_BYTE = 0xA5;
         public const byte HAS_PAYLOAD_FLAG = 0x80;
-        public const byte SYNC_BYTE1 = 0xA5;
-        public const byte SYNC_BYTE2 = 0x5A;
+        public const byte StartFlag1 = 0xA5;
+        public const byte StartFlag2 = 0x5A;
     }
 }
