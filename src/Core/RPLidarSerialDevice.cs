@@ -1,13 +1,11 @@
-﻿using RPLidarSerial.RPLidar;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
-using RPLidar4Net.Core;
 using RPLidar4Net.Core.Api;
 using Serilog;
 
-namespace RPLidarSerial
+namespace RPLidar4Net.Core
 {
     /// <summary>
     /// Serial connection for Slamtec Robopeak Lidar A1 (A2 untested)
@@ -437,7 +435,7 @@ namespace RPLidarSerial
                             }
                             break;
                         case 1://Expect the highest bit to be 1
-                            int tmp2 = currentByte & (int)Calibration.RPLIDAR_RESP_MEASUREMENT_CHECKBIT;
+                            int tmp2 = currentByte & (int)Constants.RPLIDAR_RESP_MEASUREMENT_CHECKBIT;
                             if (tmp2 == 1)
                             {
                                 //pass

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using RPLidar4Net.Core;
 
-namespace RPLidarSerial
+namespace RPLidar4Net.Core
 {
     public class NewScanEventArgs : EventArgs
     {

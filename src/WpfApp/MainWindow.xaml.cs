@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using RPLidar4Net.Core;
 using System.Windows.Shapes;
 using RPLidar4Net.Core.Api;
-using RPLidarSerial;
 
 namespace RPLidar4Net.WpfApp
 {
