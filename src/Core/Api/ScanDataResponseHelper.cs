@@ -1,4 +1,5 @@
 ﻿using System;
+using Serilog;
 
 namespace RPLidar4Net.Core.Api
 {
@@ -9,10 +10,18 @@ namespace RPLidar4Net.Core.Api
             if (bytes.Length < Constants.ScanDataResponseLength)
                 throw new Exception("RESULT_INVALID_ANS_TYPE");
 
+            Log.ForContext<ScanDataResponseHelper>();
+
+            string hexString = ByteHelper.ToHexString(bytes);
+            Log.Information("ToScanDataResponse -- bytes : {@HexString}", hexString);
+
             ScanDataResponse scanDataResponse = new ScanDataResponse();
             scanDataResponse.SyncAndQuality = bytes[0];
             scanDataResponse.AngleQ6AndCheckbit = BitConverter.ToUInt16(bytes, 1);
             scanDataResponse.DistanceQ2 = BitConverter.ToUInt16(bytes, 3);
+
+            Log.Information("ToScanDataResponse -- scanDataResponse : {@ScanDataResponse}", scanDataResponse);
+
             return scanDataResponse;
         }
 
@@ -24,6 +33,9 @@ namespace RPLidar4Net.Core.Api
             point.Quality = (scanDataResponse.SyncAndQuality >> Constants.RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
             int startFlag = (scanDataResponse.SyncAndQuality & Constants.RPLIDAR_RESP_MEASUREMENT_SYNCBIT);
             point.StartFlag = (startFlag == 1);
+
+            Log.Information("ToPoint -- point: {@Point}", point);
+
             return point;
         }
     }

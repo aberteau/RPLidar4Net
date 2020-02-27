@@ -8,6 +8,7 @@ using RPLidar4Net.Core;
 using System.Windows.Shapes;
 using RPLidarSerial;
 using RPLidarSerial.RPLidar;
+using Serilog;
 
 namespace RPLidar4Net.WpfApp
 {
@@ -27,7 +28,7 @@ namespace RPLidar4Net.WpfApp
         {
             InitializeComponent();
 
-            //StartScan();
+            StartScan();
         }
 
         private void StartScan()

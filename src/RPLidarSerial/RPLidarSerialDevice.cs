@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using RPLidar4Net.Core;
 using RPLidar4Net.Core.Api;
+using Serilog;
 
 namespace RPLidarSerial
 {
@@ -233,7 +235,14 @@ namespace RPLidarSerial
         private ResponseDescriptor ReadResponseDescriptor()
         {
             byte[] bytes = Read(Constants.ResponseDescriptorLength, 1000);
+
+            string hexString = ByteHelper.ToHexString(bytes);
+            Log.Information("ReadResponseDescriptor -- bytes : {@hexString}", hexString);
+
             ResponseDescriptor responseDescriptor = ResponseDescriptorHelper.ToResponseDescriptor(bytes);
+
+            Log.Information("ReadResponseDescriptor -- responseDescriptor : {@responseDescriptor}", responseDescriptor);
+
             return responseDescriptor;
         }
 

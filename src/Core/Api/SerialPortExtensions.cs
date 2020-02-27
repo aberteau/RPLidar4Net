@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO.Ports;
 using System.Threading;
+using Serilog;
 
 namespace RPLidar4Net.Core.Api
 {
@@ -8,10 +9,15 @@ namespace RPLidar4Net.Core.Api
     {
         public static void SendRequest(this SerialPort serialPort, Command command)
         {
+            Log.Information("SendRequest -- command : {@Command}", command);
+
             // cf. Request Packets’ Format (p. 6)
             byte commandByte = CommandHelper.GetByte(command);
 
             byte[] packetBytes = { Constants.SYNC_BYTE, commandByte };
+
+            string hexString = ByteHelper.ToHexString(packetBytes);
+            Log.Information("SendRequest -- packetBytes : {@HexString}", hexString);
 
             //TODO: Add payload
 
@@ -35,6 +41,10 @@ namespace RPLidar4Net.Core.Api
                 else
                 {
                     serialPort.Read(data, 0, count);
+
+                    string hexString = ByteHelper.ToHexString(data);
+                    Log.Information("Read -- data : {@HexString}", hexString);
+
                     return data;
                 }
             }
