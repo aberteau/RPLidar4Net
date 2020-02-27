@@ -191,7 +191,7 @@ namespace RPLidarSerial
                 ResponseDescriptor responseDescriptor = ReadResponseDescriptor();
 
                 // Scan Responses are handled in the Scanning thread
-                if (responseDescriptor.DataType != DataType.SCAN)
+                if (responseDescriptor.DataType != DataType.Scan)
                 {
                     IResponse response = ReadResponse(responseDescriptor.DataResponseLength, responseDescriptor.DataType);
                     return response;
@@ -218,10 +218,10 @@ namespace RPLidarSerial
         {
             switch (dataType)
             {
-                case DataType.GET_HEALTH:
+                case DataType.GetHealth:
                     return new HealthResponse();
 
-                case DataType.GET_INFO:
+                case DataType.GetInfo:
                     return new InformationResponse();
             }
 
