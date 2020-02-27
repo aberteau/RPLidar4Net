@@ -9,8 +9,14 @@ namespace RPLidar4Net.Core.Tests
     public class ResponseDescriptorHelperTests
     {
         [Theory]
-        [InlineData(0x14, 0x00, 0x00, 0x00, 0x04, 83886080, SendMode.SingleRequestSingleResponse, DataType.RPLIDAR_ANS_TYPE_DEVINFO)]
-        [InlineData(0x03, 0x00, 0x00, 0x00, 0x06, 12582912, SendMode.SingleRequestSingleResponse, DataType.RPLIDAR_ANS_TYPE_DEVHEALTH)]
+        // GET_INFO (p.33)
+        [InlineData(0x14, 0x00, 0x00, 0x00, 0x04, 20, SendMode.SingleRequestSingleResponse, DataType.GET_INFO)]
+
+        // GET_HEALTH (p.35)
+        [InlineData(0x03, 0x00, 0x00, 0x00, 0x06, 3, SendMode.SingleRequestSingleResponse, DataType.GET_HEALTH)]
+
+        // SCAN (p. 14)
+        [InlineData(0x05, 0x00, 0x00, 0x40, 0x81, 5, SendMode.SingleRequestMultipleResponse, DataType.SCAN)]
         public void Should_To_ResponseDescriptor(byte paramByte1, byte paramByte2, byte paramByte3, byte paramByte4, byte paramByte5, UInt32 dataResponseLength, SendMode sendMode, DataType dataType)
         {
             //TODO: Revoir calxuls dataResponseLength et sendMode

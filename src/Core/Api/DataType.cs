@@ -2,8 +2,11 @@
 {
     public enum DataType : byte
     {
-        RPLIDAR_ANS_TYPE_MEASUREMENT = 0x81,
-        RPLIDAR_ANS_TYPE_DEVINFO = 0x4,
-        RPLIDAR_ANS_TYPE_DEVHEALTH = 0x6,
+        // SCAN (p. 14)
+        SCAN = 0x81,
+        // GET_INFO (p. 33)
+        GET_INFO = 0x04,
+        // GET_HEALTH (p.35)
+        GET_HEALTH = 0x06
     }
 }

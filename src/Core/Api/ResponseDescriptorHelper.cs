@@ -68,12 +68,12 @@ namespace RPLidar4Net.Core.Api
         {
             switch (b)
             {
-                case (byte)DataType.RPLIDAR_ANS_TYPE_DEVHEALTH:
-                    return DataType.RPLIDAR_ANS_TYPE_DEVHEALTH;
-                case (byte)DataType.RPLIDAR_ANS_TYPE_DEVINFO:
-                    return DataType.RPLIDAR_ANS_TYPE_DEVINFO;
-                case (byte)DataType.RPLIDAR_ANS_TYPE_MEASUREMENT:
-                    return DataType.RPLIDAR_ANS_TYPE_MEASUREMENT;
+                case (byte)DataType.GET_HEALTH:
+                    return DataType.GET_HEALTH;
+                case (byte)DataType.GET_INFO:
+                    return DataType.GET_INFO;
+                case (byte)DataType.SCAN:
+                    return DataType.SCAN;
             }
 
             throw new Exception($"Unknown DataType {b:X2}");
