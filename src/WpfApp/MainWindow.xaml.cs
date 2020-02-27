@@ -33,7 +33,7 @@ namespace RPLidar4Net.WpfApp
 
         private void StartScan()
         {
-            _rpLidar = new RPLidarSerialDevice("com3");
+            _rpLidar = new RPLidarSerialDevice("com6");
             //Connect RPLidar
             _rpLidar.Connect();
             //Reset - Not really sure how this is supposed to work, reconnecting USB works too
@@ -43,7 +43,7 @@ namespace RPLidar4Net.WpfApp
             //Get Device Information
             InformationResponse responseInformation = _rpLidar.GetDeviceInfo();
             //Get Device Health
-            _rpLidar.GetDeviceHealth();
+            HealthResponse healthResponse = _rpLidar.GetDeviceHealth();
             //Get Data Event
             _rpLidar.NewScan += RPLidar_NewScan;
             //Start Scan Thread
