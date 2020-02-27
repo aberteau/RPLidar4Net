@@ -122,10 +122,6 @@
       <Project>{73F94748-4298-4522-916E-C37D691657E0}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RPLidarSerial\RPLidarSerial.csproj">
-      <Project>{33183FDB-4DE1-475C-93DF-60E1139BD975}</Project>
-      <Name>RPLidarSerial</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
