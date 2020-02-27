@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
-using System.Linq;
 using System.Threading;
 using RPLidar4Net.Core;
 using RPLidar4Net.Core.Api;
@@ -168,7 +167,7 @@ namespace RPLidarSerial
         /// Send Serial Command to RPLidar
         /// Todo: Implement Command with Payload and Checksum.
         /// </summary>
-        /// <param name="Command"></param>
+        /// <param name="command"></param>
         public IResponse SendRequest(Command command)
         {
             if (_isConnected)
@@ -178,57 +177,54 @@ namespace RPLidarSerial
 
                 _serialPort.SendRequest(command);
 
-                //Handle Command Response, reponse format is dependent on command type
-                IResponse response = null;
-                //We must sleep after executing some commands
-                bool sleep = false;
-                switch(command)
-                {
-                    case Command.Scan:
-                        response = null;
-                        //Reponses are handled in the Scanning thread
-                        break;
-                    case Command.GetHealth:
-                        response = new HealthResponse();
-                        break;
-                    case Command.GetInfo:
-                        response = new InformationResponse();
-                        break;
-                    case Command.Reset:
-                        sleep = true;
-                        response = null;
-                        break;
-                    case Command.Stop:
-                        sleep = true;
-                        response = null;
-                        break;
-                    case Command.ForceScan:
-                        response = null;
-                        //Reponses are handled in the Scanning thread
-                        //Use with care, returns results without motor rotation synchronization
-                        break;
-                    default:
-                        response = null;
-                        break;
-                }
+                bool hasResponse = CommandHelper.GetHasResponse(command);
 
                 //We must sleep after executing some commands
+                bool sleep = CommandHelper.GetMustSleep(command);
                 if (sleep) {
                     Thread.Sleep(20);
                 }
-                //Read additional data if any
-                if (response != null)
+
+                if (!hasResponse)
+                    return null;
+
+                ResponseDescriptor responseDescriptor = ReadResponseDescriptor();
+
+                // Scan Responses are handled in the Scanning thread
+                if (responseDescriptor.DataType != DataType.SCAN)
                 {
-                    //Read Command Header Response
-                    ResponseDescriptor responseDescriptor = ReadResponseDescriptor();
-
-                    //Poll for the command data and parse response
-                    byte[] dataResponseBytes = Read(response.Length, 1000);
-                    response.parseData(dataResponseBytes);
-
+                    IResponse response = ReadResponse(responseDescriptor.DataResponseLength, responseDescriptor.DataType);
                     return response;
                 }
             }
+            return null;
+        }
+
+        private IResponse ReadResponse(uint dataResponseLength, DataType dataType)
+        {
+            byte[] dataResponseBytes = Read(dataResponseLength, 1000);
+            IResponse response = GetResponse(dataType, dataResponseBytes);
+            return response;
+        }
+
+        private static IResponse GetResponse(DataType dataType, byte[] dataResponseBytes)
+        {
+            IResponse response = GetResponse(dataType);
+            response?.parseData(dataResponseBytes);
+            return response;
+        }
+
+        private static IResponse GetResponse(DataType dataType)
+        {
+            switch (dataType)
+            {
+                case DataType.GET_HEALTH:
+                    return new HealthResponse();
+
+                case DataType.GET_INFO:
+                    return new InformationResponse();
+            }
+
             return null;
         }
 
@@ -403,11 +399,11 @@ namespace RPLidarSerial
         /// <param name="responseLength"></param>
         /// <param name="timeout">Timeout in milliseconds</param>
         /// <returns></returns>
-        public byte[] Read(int responseLength, int timeout)
+        public byte[] Read(UInt32 responseLength, int timeout)
         {
             try
             {
-                byte[] data = _serialPort.Read(responseLength, timeout);
+                byte[] data = _serialPort.Read((int)responseLength, timeout);
                 return data;
             }
             catch
