@@ -15,7 +15,7 @@ namespace RPLidar4Net.Api.Tests
         [InlineData(0x3D, 0x07, 0xB0, 0xC1, 0x0D, 352.046875, 880.25, 15, true)]
         public void Should_To_Point(byte paramByte1, byte paramByte2, byte paramByte3, byte paramByte4, byte paramByte5, float angle, float distance, Int32 quality, bool startFlag)
         {
-            ScanDataResponse scanDataResponse = ScanDataResponseHelper.ToScanDataResponse(new byte[] { paramByte1, paramByte2, paramByte3, paramByte4, paramByte5 });
+            ScanDataResponse scanDataResponse = ScanDataResponseHelper.ToScanDataResponse(new [] { paramByte1, paramByte2, paramByte3, paramByte4, paramByte5 });
             Point result = ScanDataResponseHelper.ToPoint(scanDataResponse);
             Assert.Equal(angle, result.Angle);
             Assert.Equal(distance, result.Distance);

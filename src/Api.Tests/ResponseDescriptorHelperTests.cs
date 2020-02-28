@@ -35,8 +35,7 @@ namespace RPLidar4Net.Api.Tests
         [InlineData(0x05, 0x00, 0x00, 0x40, 0x81, 5, SendMode.SingleRequestMultipleResponse, DataType.Scan)]
         public void Should_To_ResponseDescriptor(byte paramByte1, byte paramByte2, byte paramByte3, byte paramByte4, byte paramByte5, UInt32 dataResponseLength, SendMode sendMode, DataType dataType)
         {
-            //TODO: Revoir calxuls dataResponseLength et sendMode
-            ResponseDescriptor result = ResponseDescriptorHelper.ToResponseDescriptor(new byte[] { Constants.StartFlag1, Constants.StartFlag2, paramByte1, paramByte2, paramByte3, paramByte4, paramByte5 });
+            ResponseDescriptor result = ResponseDescriptorHelper.ToResponseDescriptor(new [] { Constants.StartFlag1, Constants.StartFlag2, paramByte1, paramByte2, paramByte3, paramByte4, paramByte5 });
             Assert.Equal(Constants.StartFlag1, result.StartFlag1);
             Assert.Equal(Constants.StartFlag2, result.StartFlag2);
             Assert.Equal(dataResponseLength, result.DataResponseLength);
