@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using RPLidar4Net.Api.Data;
 using RPLidar4Net.Api.Helpers;
+using RPLidar4Net.Core;
 using Xunit;
 
-namespace RPLidar4Net.Core.Tests
+namespace RPLidar4Net.Api.Tests
 {
     public class ScanDataResponseHelperTests
     {
