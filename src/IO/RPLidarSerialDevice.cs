@@ -23,29 +23,27 @@ namespace RPLidar4Net.IO
         /// Serial Port Connection
         /// </summary>
         private SerialPort _serialPort;
+
         /// <summary>
         /// Connection Status
         /// </summary>
-        private bool _isConnected { get; set; }
+        private bool _isConnected;
+
         /// <summary>
         /// Motor Status
         /// </summary>
-        private bool _motorRunning { get; set; }
+        private bool _motorRunning;
+
         /// <summary>
         /// Scanning Status
         /// </summary>
-        private bool _isScanning { get; set; }
+        private bool _isScanning;
+
         /// <summary>
         /// Estimated motor speed
         /// </summary>
-        private double _motorSpeed { get; set; }
-        /// <summary>
-        /// Returns connection status
-        /// </summary>
-        public bool IsConnected
-        {
-            get { return _isConnected; }
-        }
+        private double _motorSpeed;
+
         public double MotorSpeed
         {
             get => _motorSpeed;
@@ -57,17 +55,6 @@ namespace RPLidar4Net.IO
         }
 
         public event EventHandler MotorSpeedChanged;
-
-        private string _serialNo { get; set; }
-        public string SerialNumber
-        {
-            get { return _serialNo; }
-        }
-
-        /// <summary>
-        /// Verbose output
-        /// </summary>
-        public bool Verbose { get; set; }
 
         private void RaiseMotorSpeedChanged()
         {
