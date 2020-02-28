@@ -122,6 +122,10 @@
       <Project>{73F94748-4298-4522-916E-C37D691657E0}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataDump\DataDump.csproj">
+      <Project>{FB0311E5-B2B9-4916-83CC-51C2C6D8923D}</Project>
+      <Name>DataDump</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IO\IO.csproj">
       <Project>{eaf2114f-e95e-486a-a941-bfaec4bc5f10}</Project>
       <Name>IO</Name>

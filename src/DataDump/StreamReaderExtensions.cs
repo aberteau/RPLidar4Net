@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace RPLidar4Net.Core
+namespace RPLidar4Net.DataDump
 {
     public static class StreamReaderExtensions
     {

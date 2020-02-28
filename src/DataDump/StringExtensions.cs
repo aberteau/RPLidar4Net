@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RPLidar4Net.Core
+namespace RPLidar4Net.DataDump
 {
     public static class StringExtensions
     {
