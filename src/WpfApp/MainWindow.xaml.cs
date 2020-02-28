@@ -6,6 +6,7 @@ using System.Windows.Media;
 using RPLidar4Net.Core;
 using System.Windows.Shapes;
 using RPLidar4Net.Core.Api;
+using RPLidar4Net.IO;
 
 namespace RPLidar4Net.WpfApp
 {

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
+using RPLidar4Net.Core;
 using RPLidar4Net.Core.Api;
 using Serilog;
 
-namespace RPLidar4Net.Core
+namespace RPLidar4Net.IO
 {
     /// <summary>
     /// Serial connection for Slamtec Robopeak Lidar A1 (A2 untested)

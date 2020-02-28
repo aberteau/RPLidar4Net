@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO.Ports;
 using System.Threading;
+using RPLidar4Net.Core;
+using RPLidar4Net.Core.Api;
 using Serilog;
 
-namespace RPLidar4Net.Core.Api
+namespace RPLidar4Net.IO
 {
     public static class SerialPortExtensions
     {
