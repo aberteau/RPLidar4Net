@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
+using RPLidar4Net.Api.Data;
 
-namespace RPLidar4Net.Core.Api
+namespace RPLidar4Net.Api.Helpers
 {
     public class ResponseDescriptorHelper
     {

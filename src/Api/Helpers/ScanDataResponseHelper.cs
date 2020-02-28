@@ -1,7 +1,9 @@
 ﻿using System;
+using RPLidar4Net.Api.Data;
+using RPLidar4Net.Core;
 using Serilog;
 
-namespace RPLidar4Net.Core.Api
+namespace RPLidar4Net.Api.Helpers
 {
     public class ScanDataResponseHelper
     {

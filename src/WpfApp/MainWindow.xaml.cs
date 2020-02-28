@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using RPLidar4Net.Core;
 using System.Windows.Shapes;
-using RPLidar4Net.Core.Api;
+using RPLidar4Net.Api.Data;
 using RPLidar4Net.DataDump;
 using RPLidar4Net.IO;
 

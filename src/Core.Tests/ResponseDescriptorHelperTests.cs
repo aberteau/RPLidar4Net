@@ -1,5 +1,6 @@
 ﻿using System;
-using RPLidar4Net.Core.Api;
+using RPLidar4Net.Api.Data;
+using RPLidar4Net.Api.Helpers;
 using Xunit;
 
 namespace RPLidar4Net.Core.Tests

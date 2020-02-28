@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace RPLidar4Net.Core.Api
+﻿namespace RPLidar4Net.Api.Data
 {
     /// <summary>
     /// 

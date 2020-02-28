@@ -118,6 +118,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Api\Api.csproj">
+      <Project>{F8076662-B8BD-4E0F-AACF-76B021BD80E7}</Project>
+      <Name>Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{73F94748-4298-4522-916E-C37D691657E0}</Project>
       <Name>Core</Name>

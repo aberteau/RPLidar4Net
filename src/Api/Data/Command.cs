@@ -1,4 +1,4 @@
-﻿namespace RPLidar4Net.Core.Api
+﻿namespace RPLidar4Net.Api.Data
 {
     /// <summary>
     /// 

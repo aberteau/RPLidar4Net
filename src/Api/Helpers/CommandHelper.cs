@@ -1,4 +1,6 @@
-﻿namespace RPLidar4Net.Core.Api
+﻿using RPLidar4Net.Api.Data;
+
+namespace RPLidar4Net.Api.Helpers
 {
     public class CommandHelper
     {

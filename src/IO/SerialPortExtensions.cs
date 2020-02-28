@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO.Ports;
 using System.Threading;
+using RPLidar4Net.Api.Data;
+using RPLidar4Net.Api.Helpers;
 using RPLidar4Net.Core;
-using RPLidar4Net.Core.Api;
 using Serilog;
 
 namespace RPLidar4Net.IO
