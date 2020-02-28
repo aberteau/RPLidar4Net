@@ -41,11 +41,5 @@ namespace RPLidar4Net.Core
             point.Quality = Convert.ToInt32(values[2]);
             return point;
         }
-
-        public static PointF ToPointF(PointF origin, float rotation, Point point)
-        {
-            PointF pointF = PointFHelper.ToPointF(origin, rotation, point.Angle, point.Distance);
-            return pointF;
-        }
     }
 }

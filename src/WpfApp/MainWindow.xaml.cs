@@ -69,7 +69,7 @@ namespace RPLidar4Net.WpfApp
         {
             foreach (Core.Point point in points)
             {
-                System.Drawing.PointF pointF = PointHelper.ToPointF(_origin, Rotation, point);
+                System.Drawing.PointF pointF = PointFHelper.ToPointF(_origin, Rotation, point);
                 DrawEllipse(pointF, Colors.Black);
             }
         }

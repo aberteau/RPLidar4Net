@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace RPLidar4Net.Core
 {
-    class PointFHelper
+    public class PointFHelper
     {
         public static PointF ToPointF(PointF origin, float rotation, float angle, float distance)
         {
@@ -14,6 +14,12 @@ namespace RPLidar4Net.Core
             float x = Convert.ToSingle(dblX);
             float y = Convert.ToSingle(dblY);
             PointF pointF = new PointF(x, y);
+            return pointF;
+        }
+
+        public static PointF ToPointF(PointF origin, float rotation, Point point)
+        {
+            PointF pointF = ToPointF(origin, rotation, point.Angle, point.Distance);
             return pointF;
         }
     }
