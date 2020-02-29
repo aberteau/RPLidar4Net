@@ -19,8 +19,7 @@ namespace RPLidar4Net.Api.Helpers
                 throw new Exception("RESULT_INVALID_ANS_TYPE");
             }
 
-            UInt32 dataResponseLengthAndSendModeBytes = BitConverter.ToUInt32(data,2);
-            Tuple<uint, SendMode> tuple = GetDataResponseLengthAndSendMode(dataResponseLengthAndSendModeBytes);
+            Tuple<uint, SendMode> tuple = GetDataResponseLengthAndSendMode(data);
 
             ResponseDescriptor responseDescriptor = new ResponseDescriptor();
             responseDescriptor.DataResponseLength = tuple.Item1;
@@ -28,6 +27,13 @@ namespace RPLidar4Net.Api.Helpers
             responseDescriptor.DataType = (DataType)data[6];
 
             return responseDescriptor;
+        }
+
+        private static Tuple<uint, SendMode> GetDataResponseLengthAndSendMode(byte[] data)
+        {
+            UInt32 dataResponseLengthAndSendModeBytes = BitConverter.ToUInt32(data, 2);
+            Tuple<uint, SendMode> tuple = GetDataResponseLengthAndSendMode(dataResponseLengthAndSendModeBytes);
+            return tuple;
         }
 
         public static Tuple<uint, SendMode> GetDataResponseLengthAndSendMode(uint dataResponseLengthAndSendMode)
