@@ -13,18 +13,16 @@ namespace RPLidar4Net.Api.Helpers
             if (data.Length < Constants.ResponseDescriptorLength)
                 throw new Exception("RESULT_INVALID_ANS_TYPE");
 
-            ResponseDescriptor responseDescriptor = new ResponseDescriptor();
-            responseDescriptor.StartFlag1 = data[0];
-            responseDescriptor.StartFlag2 = data[1];
-
             //Check Validity
-            if (!IsValid(responseDescriptor.StartFlag1, responseDescriptor.StartFlag2))
+            if (!IsValid(data[0], data[1]))
             {
                 throw new Exception("RESULT_INVALID_ANS_TYPE");
             }
 
             UInt32 dataResponseLengthAndSendModeBytes = BitConverter.ToUInt32(data,2);
             Tuple<uint, SendMode> tuple = GetDataResponseLengthAndSendMode(dataResponseLengthAndSendModeBytes);
+
+            ResponseDescriptor responseDescriptor = new ResponseDescriptor();
             responseDescriptor.DataResponseLength = tuple.Item1;
             responseDescriptor.SendMode = tuple.Item2;
             responseDescriptor.DataType = (DataType)data[6];
