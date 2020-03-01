@@ -10,15 +10,12 @@ using Serilog;
 namespace RPLidar4Net.IO
 {
     /// <summary>
-    /// Serial connection for Slamtec Robopeak Lidar A1 (A2 untested)
-    /// http://www.slamtec.com/en/Lidar/A1
-    /// http://www.slamtec.com/download/lidar/documents/en-us/robopeak_2d_lidar_brief_en.pdf
-    /// 
-    /// http://www.slamtec.com/download/lidar/documents/en-us/rplidar_interface_protocol_en.pdf
+    /// Serial connection for Slamtec RPLidar
+    /// Tested on RPLidar A1 http://www.slamtec.com/en/Lidar/A1
+    /// https://download.slamtec.com/api/download/rplidar-protocol/2.1.1?lang=en
     /// </summary>
     public class RPLidarSerialDevice
     {
-
         /// <summary>
         /// Serial Port Connection
         /// </summary>
@@ -80,15 +77,15 @@ namespace RPLidar4Net.IO
         /// <summary>
         /// Robo Peak Lidar 360 Scanner, serial connection
         /// </summary>
-        /// <param name="portname"></param>
-        /// <param name="baudate"></param>
+        /// <param name="portName"></param>
+        /// <param name="baudRate"></param>
         /// <param name="timeout"></param>
-        public RPLidarSerialDevice(string portname = "com4", int baudate = 115200, int timeout = 1000)
+        public RPLidarSerialDevice(string portName = "com4", int baudRate = 115200, int timeout = 1000)
         {
             // Create a new SerialPort
             _serialPort = new SerialPort();
-            _serialPort.PortName = portname;
-            _serialPort.BaudRate = baudate;
+            _serialPort.PortName = portName;
+            _serialPort.BaudRate = baudRate;
             //Setup RPLidar specifics
             _serialPort.Parity = Parity.None;
             _serialPort.DataBits = 8;
@@ -151,8 +148,7 @@ namespace RPLidar4Net.IO
             }
         }
         /// <summary>
-        /// Send Serial Command to RPLidar
-        /// Todo: Implement Command with Payload and Checksum.
+        /// Send Request to RPLidar
         /// </summary>
         /// <param name="command"></param>
         public IDataResponse SendRequest(Command command)
@@ -163,6 +159,7 @@ namespace RPLidar4Net.IO
                 _serialPort.DiscardInBuffer();
 
                 _serialPort.SendRequest(command);
+                //Todo: Implement Command with Payload and Checksum.
 
                 bool hasResponse = CommandHelper.GetHasResponse(command);
 
@@ -385,12 +382,12 @@ namespace RPLidar4Net.IO
 
         private byte[] ReadScanDataResponseBytes(int timeout)
         {
-            DateTime _startTime = DateTime.Now;
+            DateTime startTime = DateTime.Now;
             byte[] nodebuf = new byte[Constants.ScanDataResponseLength];
             int recvPos = 0;
             try
             {
-                while ((DateTime.Now - _startTime).TotalMilliseconds < timeout && _isScanning)
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && _isScanning)
                 {
                     int currentByte = _serialPort.ReadByte();
                     if (currentByte < 0)
