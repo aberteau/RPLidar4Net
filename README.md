@@ -1,6 +1,10 @@
 # RPLidar4Net
-RPLidar API in C#
+Slamtec RPLidar API in C#
 
+## Specifications
+[Interface Protocol and Application Notes](https://download.slamtec.com/api/download/rplidar-protocol/2.1.1?lang=en)
+
+Tested on RPLidar A1 http://www.slamtec.com/en/Lidar/A1
 ## Projects
 ### Libraries
 |Name|Description|TargetFramework
