@@ -180,14 +180,14 @@ namespace RPLidar4Net.IO
                 // Scan Responses are handled in the Scanning thread
                 if (responseDescriptor.DataType != DataType.Scan)
                 {
-                    IDataResponse response = ReadResponse(responseDescriptor.DataResponseLength, responseDescriptor.DataType);
+                    IDataResponse response = ReadDataResponse(responseDescriptor.DataResponseLength, responseDescriptor.DataType);
                     return response;
                 }
             }
             return null;
         }
 
-        private IDataResponse ReadResponse(uint dataResponseLength, DataType dataType)
+        private IDataResponse ReadDataResponse(uint dataResponseLength, DataType dataType)
         {
             byte[] dataResponseBytes = Read(dataResponseLength, 1000);
             IDataResponse response = DataResponseHelper.ToDataResponse(dataType, dataResponseBytes);
