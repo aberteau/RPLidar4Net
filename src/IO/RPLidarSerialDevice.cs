@@ -190,21 +190,8 @@ namespace RPLidar4Net.IO
         private IDataResponse ReadResponse(uint dataResponseLength, DataType dataType)
         {
             byte[] dataResponseBytes = Read(dataResponseLength, 1000);
-            IDataResponse response = ToDataResponse(dataType, dataResponseBytes);
+            IDataResponse response = DataResponseHelper.ToDataResponse(dataType, dataResponseBytes);
             return response;
-        }
-
-        private static IDataResponse ToDataResponse(DataType dataType, byte[] dataResponseBytes)
-        {
-            switch (dataType)
-            {
-                case DataType.GetHealth:
-                    return HealthDataResponseHelper.ToHealthDataResponse(dataResponseBytes);
-
-                case DataType.GetInfo:
-                    return InfoDataResponseHelper.ToInfoDataResponse(dataResponseBytes);
-            }
-            return null;
         }
 
         private ResponseDescriptor ReadResponseDescriptor()
