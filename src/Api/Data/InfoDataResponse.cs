@@ -6,6 +6,8 @@
     public class InfoDataResponse
         : IDataResponse
     {
+        public DataType Type { get; } = DataType.GetInfo;
+
         /// <summary>
         /// Device Serial Number
         /// </summary>

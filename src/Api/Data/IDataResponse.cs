@@ -2,5 +2,6 @@
 {
     public interface IDataResponse
     {
+        DataType Type { get; }
     }
 }

@@ -8,6 +8,8 @@ namespace RPLidar4Net.Api.Data
     public class HealthDataResponse
         : IDataResponse
     {
+        public DataType Type { get; } = DataType.GetHealth;
+
         /// <summary>
         /// Status Code
         /// 0x0 = OK, 0x1 = Warning, 0x2 = Error
@@ -17,16 +19,5 @@ namespace RPLidar4Net.Api.Data
         /// Error Code Result
         /// </summary>
         public int ErrorCode { get; set; }
-        /// <summary>
-        /// Parse Data
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public void parseData(byte[] data)
-        {
-            Status = data[0]; 
-            ErrorCode = BitConverter.ToUInt16(data, 1);
-        }
-
     }
 }
