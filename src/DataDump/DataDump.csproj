@@ -5,7 +5,7 @@
     <AssemblyName>RPLidar4Net.DataDump</AssemblyName>
     <RootNamespace>RPLidar4Net.DataDump</RootNamespace>
     <PackageId>RPLidar4Net.DataDump</PackageId>
-    <PackageVersion>0.1.0</PackageVersion>
+    <PackageVersion>0.2.0</PackageVersion>
     <PackageProjectUrl>https://github.com/aberteau/RPLidar4Net/</PackageProjectUrl>
     <Authors>Amael BERTEAU</Authors>
     <Description>RPLidar4Net.DataDump</Description>
