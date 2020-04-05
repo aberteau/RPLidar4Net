@@ -32,7 +32,7 @@ namespace RPLidar4Net.Api.Helpers
             Point point = new Point();
             point.Distance = scanDataResponse.DistanceQ2 / 4.0f;
             point.Angle = (scanDataResponse.AngleQ6AndCheckbit >> Constants.RPLIDAR_RESP_MEASUREMENT_ANGLE_SHIFT) / 64.0f;
-            point.Quality = (scanDataResponse.SyncAndQuality >> Constants.RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
+            point.Quality = (byte)(scanDataResponse.SyncAndQuality >> Constants.RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
             int startFlag = (scanDataResponse.SyncAndQuality & Constants.RPLIDAR_RESP_MEASUREMENT_SYNCBIT);
             point.StartFlag = (startFlag == 1);
 

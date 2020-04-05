@@ -17,7 +17,7 @@ namespace RPLidar4Net.Core
         /// <summary>
         /// Quality of the measurement
         /// </summary>
-        public Int32 Quality { get; set; }
+        public byte Quality { get; set; }
 
         /// <summary>
         /// New 360 degree scan indicator

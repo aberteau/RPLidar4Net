@@ -38,7 +38,7 @@ namespace RPLidar4Net.DataDump
             CultureInfo cultureInfo = new CultureInfo("en-US");
             point.Angle = Convert.ToSingle(values[0], cultureInfo);
             point.Distance = Convert.ToSingle(values[1], cultureInfo);
-            point.Quality = Convert.ToInt32(values[2]);
+            point.Quality = Convert.ToByte(values[2]);
             return point;
         }
     }
