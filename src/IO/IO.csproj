@@ -5,7 +5,7 @@
     <AssemblyName>RPLidar4Net.IO</AssemblyName>
     <RootNamespace>RPLidar4Net.IO</RootNamespace>
     <PackageId>RPLidar4Net.IO</PackageId>
-    <PackageVersion>0.2.0</PackageVersion>
+    <PackageVersion>0.3.0</PackageVersion>
     <PackageProjectUrl>https://github.com/aberteau/RPLidar4Net/</PackageProjectUrl>
     <Authors>Amael BERTEAU</Authors>
     <Description>RPLidar4Net.IO</Description>
