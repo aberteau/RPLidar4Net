@@ -21,6 +21,8 @@ namespace RPLidar4Net.IO
         /// </summary>
         private SerialPort _serialPort;
 
+        private int _readWriteTimeout;
+
         /// <summary>
         /// Connection Status
         /// </summary>
@@ -93,6 +95,7 @@ namespace RPLidar4Net.IO
             // Set the read/write timeouts
             _serialPort.ReadTimeout = timeout;
             _serialPort.WriteTimeout = timeout;
+            _readWriteTimeout = timeout;
         }
 
         /// <summary>
@@ -186,14 +189,14 @@ namespace RPLidar4Net.IO
 
         private IDataResponse ReadDataResponse(uint dataResponseLength, DataType dataType)
         {
-            byte[] dataResponseBytes = Read(dataResponseLength, 1000);
+            byte[] dataResponseBytes = Read(dataResponseLength, _readWriteTimeout);
             IDataResponse response = DataResponseHelper.ToDataResponse(dataType, dataResponseBytes);
             return response;
         }
 
         private ResponseDescriptor ReadResponseDescriptor()
         {
-            byte[] bytes = Read(Constants.ResponseDescriptorLength, 1000);
+            byte[] bytes = Read(Constants.ResponseDescriptorLength, _readWriteTimeout);
 
             string hexString = ByteHelper.ToHexString(bytes);
             Log.Information("ReadResponseDescriptor -- bytes : {@hexString}", hexString);
@@ -329,7 +332,7 @@ namespace RPLidar4Net.IO
             //Loop while we're scanning
             while (this._isScanning)
             {
-                ScanDataResponse scanDataResponse = ReadScanDataResponse(1000);
+                ScanDataResponse scanDataResponse = ReadScanDataResponse(_readWriteTimeout);
                 Point point = ScanDataResponseHelper.ToPoint(scanDataResponse);
 
                 //Check for new 360 degree scan bit
