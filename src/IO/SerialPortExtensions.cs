@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
 using RPLidar4Net.Api.Data;
@@ -10,21 +11,34 @@ namespace RPLidar4Net.IO
 {
     public static class SerialPortExtensions
     {
-        public static void SendRequest(this SerialPort serialPort, Command command)
+        public static void SendRequest(this SerialPort serialPort, Command command, byte[] payload, bool includePayloadSize)
         {
             Log.Information("SendRequest -- command : {@Command}", command);
 
             // cf. Request Packets’ Format (p. 6)
             byte commandByte = CommandHelper.GetByte(command);
 
-            byte[] packetBytes = { Constants.SYNC_BYTE, commandByte };
+            var packetBytes = new List<byte>();
+            packetBytes.Add(Constants.SYNC_BYTE);
+            packetBytes.Add(commandByte);
 
-            string hexString = ByteHelper.ToHexString(packetBytes);
+            //Add payload
+            if (payload != null)
+            {
+                if (includePayloadSize)
+                    packetBytes.Add((byte)payload.Length);
+                packetBytes.AddRange(payload);
+                byte checksum = 0;
+                foreach (var b in packetBytes) 
+                    checksum ^= b;
+                packetBytes.Add(checksum);
+            }
+
+            var packet = packetBytes.ToArray();
+            string hexString = ByteHelper.ToHexString(packet);
             Log.Information("SendRequest -- packetBytes : {@HexString}", hexString);
 
-            //TODO: Add payload
-
-            serialPort.Write(packetBytes, 0, packetBytes.Length);
+            serialPort.Write(packet, 0, packet.Length);
         }
 
         public static byte[] Read(this SerialPort serialPort, int count, int timeout)
