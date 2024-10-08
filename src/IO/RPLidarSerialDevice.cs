@@ -21,7 +21,7 @@ namespace RPLidar4Net.IO
         /// </summary>
         private SerialPort _serialPort;
 
-        private int _readWriteTimeout;
+        private readonly int _readWriteTimeout;
 
         /// <summary>
         /// Connection Status
