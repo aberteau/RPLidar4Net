@@ -7,6 +7,8 @@
         // GET_INFO (p. 33)
         GetInfo = 0x04,
         // GET_HEALTH (p.35)
-        GetHealth = 0x06
+        GetHealth = 0x06,
+        // GET_LIDAR_CONF (p.38)
+        LidarConfig = 0x20
     }
 }

@@ -16,6 +16,9 @@ namespace RPLidar4Net.Api.Helpers
 
                 case DataType.GetInfo:
                     return InfoDataResponseHelper.ToInfoDataResponse(dataResponseBytes);
+
+                case DataType.LidarConfig:
+                    return LidarConfigDataResponseHelper.ToLidarConfigDataResponse(dataResponseBytes);
             }
             return null;
         }

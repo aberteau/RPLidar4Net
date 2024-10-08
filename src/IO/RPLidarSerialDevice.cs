@@ -21,6 +21,8 @@ namespace RPLidar4Net.IO
         /// </summary>
         private SerialPort _serialPort;
 
+        private int _readWriteTimeout;
+
         /// <summary>
         /// Connection Status
         /// </summary>
@@ -93,6 +95,7 @@ namespace RPLidar4Net.IO
             // Set the read/write timeouts
             _serialPort.ReadTimeout = timeout;
             _serialPort.WriteTimeout = timeout;
+            _readWriteTimeout = timeout;
         }
 
         /// <summary>
@@ -151,15 +154,14 @@ namespace RPLidar4Net.IO
         /// Send Request to RPLidar
         /// </summary>
         /// <param name="command"></param>
-        public IDataResponse SendRequest(Command command)
+        public IDataResponse SendRequest(Command command, byte[] payload = null, bool includePayloadSize = true)
         {
             if (_isConnected)
             {
                 //Clear input buffer of any junk
                 _serialPort.DiscardInBuffer();
 
-                _serialPort.SendRequest(command);
-                //Todo: Implement Command with Payload and Checksum.
+                _serialPort.SendRequest(command, payload, includePayloadSize);
 
                 bool hasResponse = CommandHelper.GetHasResponse(command);
 
@@ -186,14 +188,14 @@ namespace RPLidar4Net.IO
 
         private IDataResponse ReadDataResponse(uint dataResponseLength, DataType dataType)
         {
-            byte[] dataResponseBytes = Read(dataResponseLength, 1000);
+            byte[] dataResponseBytes = Read(dataResponseLength, _readWriteTimeout);
             IDataResponse response = DataResponseHelper.ToDataResponse(dataType, dataResponseBytes);
             return response;
         }
 
         private ResponseDescriptor ReadResponseDescriptor()
         {
-            byte[] bytes = Read(Constants.ResponseDescriptorLength, 1000);
+            byte[] bytes = Read(Constants.ResponseDescriptorLength, _readWriteTimeout);
 
             string hexString = ByteHelper.ToHexString(bytes);
             Log.Information("ReadResponseDescriptor -- bytes : {@hexString}", hexString);
@@ -250,6 +252,38 @@ namespace RPLidar4Net.IO
         public HealthDataResponse GetHealth()
         {
             return (HealthDataResponse)this.SendRequest(Command.GetHealth);
+        }
+        /// <summary>
+        /// Get number of ScanModes via Lidar Conf
+        /// </summary>
+        public int GetScanModeCount()
+        {
+            var response = (LidarConfigDataResponse)this.SendRequest(Command.GetLidarConf, CommandHelper.GetLidarConfigPayload(LidarConfigType.ScanModeCount));
+            return response.ScanModeCount;
+        }
+        /// <summary>
+        /// Get typical ScanMode via Lidar Conf
+        /// </summary>
+        public byte GetTypicalScanMode()
+        {
+            var response = (LidarConfigDataResponse)this.SendRequest(Command.GetLidarConf, CommandHelper.GetLidarConfigPayload(LidarConfigType.ScaneModeTypical));
+            return response.TypicalScanMode;
+        }
+        /// <summary>
+        /// Get name of ScanMode via Lidar Conf
+        /// </summary>
+        public string GetScanModeName(byte scanMode)
+        {
+            var response = (LidarConfigDataResponse)this.SendRequest(Command.GetLidarConf, CommandHelper.GetLidarConfigPayload(LidarConfigType.ScanModeName, scanMode));
+            return response.ScanModeName;
+        }
+        /// <summary>
+        /// Get answer command type of ScanMode via Lidar Conf
+        /// </summary>
+        public byte GetScanModeAnswerType(byte scanMode)
+        {
+            var response = (LidarConfigDataResponse)this.SendRequest(Command.GetLidarConf, CommandHelper.GetLidarConfigPayload(LidarConfigType.ScanModeAnsType, scanMode));
+            return response.AnswerType;
         }
         /// <summary>
         /// Force Start Scanning
@@ -329,7 +363,7 @@ namespace RPLidar4Net.IO
             //Loop while we're scanning
             while (this._isScanning)
             {
-                ScanDataResponse scanDataResponse = ReadScanDataResponse(1000);
+                ScanDataResponse scanDataResponse = ReadScanDataResponse(_readWriteTimeout);
                 Point point = ScanDataResponseHelper.ToPoint(scanDataResponse);
 
                 //Check for new 360 degree scan bit
