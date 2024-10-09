@@ -12,6 +12,7 @@ namespace RPLidar4Net.Api.Helpers
             LidarConfigDataResponse dataResponse = new LidarConfigDataResponse();
             switch(data[0])
             {
+                case (byte)LidarConfigType.DesiredRotationFrequency: dataResponse.DesiredRotationFrequency = BitConverter.ToUInt16(data, 4); break;
                 case (byte)LidarConfigType.ScanModeCount: dataResponse.ScanModeCount = BitConverter.ToUInt16(data, 4); break;
                 case (byte)LidarConfigType.ScaneModeTypical: dataResponse.TypicalScanMode = (byte)BitConverter.ToUInt16(data, 4); break;
                 case (byte)LidarConfigType.ScanModeAnsType: dataResponse.AnswerType = data[4]; break;

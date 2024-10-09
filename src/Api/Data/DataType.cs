@@ -9,6 +9,8 @@
         // GET_HEALTH (p.35)
         GetHealth = 0x06,
         // GET_LIDAR_CONF (p.38)
-        LidarConfig = 0x20
+        LidarConfig = 0x20,
+        //s_lidar_cmd.h:162
+        AccBoardFlag = 0xFF
     }
 }

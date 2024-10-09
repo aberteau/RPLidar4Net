@@ -15,6 +15,9 @@
         GetInfo = 0x50,
         GetHealth = 0x52,
         GetSampleRate = 0x59,
-        GetLidarConf = 0x84
+        GetLidarConf = 0x84,
+        MotorSpeedControl = 0xA8,
+        SetMotorPWM = 0xF0,
+        GetAccBoardFlag = 0xFF
     }
 }
