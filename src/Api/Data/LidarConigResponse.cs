@@ -11,6 +11,11 @@ namespace RPLidar4Net.Api.Data
         public DataType Type { get; } = DataType.LidarConfig;
 
         /// <summary>
+        /// The desired rotatation frequency for the device
+        /// </summary>
+        public UInt16 DesiredRotationFrequency { get; set; }
+
+        /// <summary>
         /// The number of scan modes supported by the device
         /// </summary>
         public int ScanModeCount { get; set; }

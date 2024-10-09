@@ -19,6 +19,9 @@ namespace RPLidar4Net.Api.Helpers
 
                 case DataType.LidarConfig:
                     return LidarConfigDataResponseHelper.ToLidarConfigDataResponse(dataResponseBytes);
+
+                case DataType.AccBoardFlag:
+                    return AccBoardFlagResponseHelper.ToAccBoardFlagDataResponse(dataResponseBytes);
             }
             return null;
         }
