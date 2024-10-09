@@ -53,6 +53,8 @@ namespace RPLidar4Net.IO
             }
         }
 
+        public bool IsConnected => _isConnected;
+
         public event EventHandler MotorSpeedChanged;
 
         private void RaiseMotorSpeedChanged()
