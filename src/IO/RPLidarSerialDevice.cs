@@ -122,7 +122,6 @@ namespace RPLidar4Net.IO
         {
             if (_serialPort != null)
             {
-
                 //Stop scan
                 if (_isScanning)
                 {
@@ -351,44 +350,6 @@ namespace RPLidar4Net.IO
                 return;
             }
         }
-        /// <summary>
-        /// Thread used for scanning
-        /// Populates a list of Measurements, and adds that list to 
-        /// </summary>
-        public void ScanThread()
-        {
-            DateTime lastStartFlagDateTime = new DateTime();
-            IList<Point> points = new List<Point>();
-
-            //Loop while we're scanning
-            while (this._isScanning)
-            {
-                ScanDataResponse scanDataResponse = ReadScanDataResponse(_readWriteTimeout);
-                Point point = ScanDataResponseHelper.ToPoint(scanDataResponse);
-
-                //Check for new 360 degree scan bit
-                if (point.StartFlag)
-                {
-                    MotorSpeed = (1 / (DateTime.Now - lastStartFlagDateTime).TotalSeconds) * 60;
-                    lastStartFlagDateTime = DateTime.Now;
-
-                    RaiseNewScan(points);
-
-                    points = new List<Point>();
-                }
-
-                if (point.IsValid)
-                    points.Add(point);
-            }
-        }
-
-
-        private ScanDataResponse ReadScanDataResponse(int timeout)
-        {
-            byte[] bytes = ReadScanDataResponseBytes(timeout);
-            ScanDataResponse scanDataResponse = ScanDataResponseHelper.ToScanDataResponse(bytes);
-            return scanDataResponse;
-        }
 
         /// <summary>
         /// Waits for Serial Data
@@ -414,51 +375,38 @@ namespace RPLidar4Net.IO
             }
         }
 
-        private byte[] ReadScanDataResponseBytes(int timeout)
+        /// <summary>
+        /// Thread used for scanning
+        /// Populates a list of Measurements, and adds that list to 
+        /// </summary>
+        public void ScanThread()
         {
-            DateTime startTime = DateTime.Now;
-            byte[] nodebuf = new byte[Constants.ScanDataResponseLength];
-            int recvPos = 0;
+            DateTime lastStartFlagDateTime = new DateTime();
+            var fullScan = new List<Point>();
+            _responseBytePos = 0;
+
             try
             {
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && _isScanning)
+                //Loop while we're scanning
+                while (this._isScanning)
                 {
-                    int currentByte = _serialPort.ReadByte();
-                    if (currentByte < 0)
-                        continue;
+                    var newPoints = ReadScanDataResponses();
 
-                    switch (recvPos)
+                    foreach (var point in newPoints)
                     {
-                        case 0://Byte 0, sync bit and its inverse
-                            int tmp = ((byte)currentByte >> 1);
-                            int result = (tmp ^ currentByte) & 0x1;
-                            if (result == 1)
-                            {
-                                //Pass
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                            break;
-                        case 1://Expect the highest bit to be 1
-                            int tmp2 = currentByte & (int)Constants.RPLIDAR_RESP_MEASUREMENT_CHECKBIT;
-                            if (tmp2 == 1)
-                            {
-                                //pass
-                            }
-                            else
-                            {
-                                recvPos = 0;
-                                continue;
-                            }
-                            break;
-                    }
-                    nodebuf[recvPos++] = Convert.ToByte(currentByte);
+                        //Check for new 360 degree scan bit
+                        if (point.StartFlag)
+                        {
+                            MotorSpeed = (1 / (DateTime.Now - lastStartFlagDateTime).TotalSeconds) * 60;
+                            lastStartFlagDateTime = DateTime.Now;
 
-                    if (recvPos == 5)
-                    {
-                        return nodebuf;
+                            RaiseNewScan(fullScan);
+
+                            fullScan = new List<Point>();
+                        }
+
+                        if (point.IsValid)
+                            fullScan.Add(point);
                     }
                 }
             }
@@ -469,7 +417,57 @@ namespace RPLidar4Net.IO
                 //Then go through the motions
                 this.Disconnect();
             }
-            return nodebuf;
+        }
+
+        const int _incomingBufferSize = 8192;
+        byte[] _currentBytes = new byte[_incomingBufferSize];
+        byte[] _responseBytes = new byte[Constants.ScanDataResponseLength];
+        int _responseBytePos;
+        private IEnumerable<Point> ReadScanDataResponses()
+        {
+            var bytesRead = _serialPort.Read(_currentBytes, 0, _incomingBufferSize);
+            var currentBytePos = 0;
+
+            while (_isScanning && currentBytePos < bytesRead)
+            {
+                var currentByte = _currentBytes[currentBytePos];
+                currentBytePos += 1;
+
+                switch (_responseBytePos)
+                {
+                    case 0://Byte 0, sync bit and its inverse
+                        int tmp = (currentByte >> 1);
+                        int result = (tmp ^ currentByte) & 0x1;
+                        if (result == 1)
+                        {
+                            //pass
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        break;
+                    case 1://Expect the highest bit to be 1
+                        int tmp2 = currentByte & Constants.RPLIDAR_RESP_MEASUREMENT_CHECKBIT;
+                        if (tmp2 == 1)
+                        {
+                            //pass
+                        }
+                        else
+                        {
+                            _responseBytePos = 0;
+                            continue;
+                        }
+                        break;
+                }
+                _responseBytes[_responseBytePos++] = currentByte;
+
+                if (_responseBytePos == Constants.ScanDataResponseLength)
+                {
+                    _responseBytePos = 0;
+                    yield return ScanDataResponseHelper.ToPoint(ScanDataResponseHelper.ToScanDataResponse(_responseBytes));
+                }
+            }
         }
     }
 }
