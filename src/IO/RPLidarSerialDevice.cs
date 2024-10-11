@@ -230,8 +230,8 @@ namespace RPLidar4Net.IO
 
                     switch (_motorControlSupport)
                     {
-                        case MotorControlSupport.RPM: SendRequest(Command.MotorSpeedControl, BitConverter.GetBytes(desiredFreq), true); break;
-                        case MotorControlSupport.PWM: SendRequest(Command.SetMotorPWM, BitConverter.GetBytes(desiredFreq), true); break;
+                        case MotorControlSupport.RPM: SendRequest(Command.MotorSpeedControl, BitConverter.GetBytes(desiredFreq.DesiredRotationFrequencyRPM), true); break;
+                        case MotorControlSupport.PWM: SendRequest(Command.SetMotorPWM, BitConverter.GetBytes(desiredFreq.DesiredRotationFrequencyPWM), true); break;
                     }
                 }
 
@@ -280,10 +280,9 @@ namespace RPLidar4Net.IO
         /// <summary>
         /// Get desired rotation frequency
         /// </summary>
-        public UInt16 GetDesiredRotationFrequency()
+        public LidarConfigDataResponse GetDesiredRotationFrequency()
         {
-            var response = (LidarConfigDataResponse)this.SendRequest(Command.GetLidarConf, CommandHelper.GetLidarConfigPayload(LidarConfigType.DesiredRotationFrequency));
-            return response.DesiredRotationFrequency;
+            return (LidarConfigDataResponse)this.SendRequest(Command.GetLidarConf, CommandHelper.GetLidarConfigPayload(LidarConfigType.DesiredRotationFrequency));
         }
         /// <summary>
         /// Get number of ScanModes via Lidar Conf
