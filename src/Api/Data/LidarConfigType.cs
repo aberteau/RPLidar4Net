@@ -8,6 +8,8 @@
         : int
     {
         DesiredRotationFrequency = 0x01, //Get the desired motor speed
+        MinRotationFrequency = 0x04, //Get the minimum motor speed
+        MaxRotationFrequency = 0x05, //Get the maximum motor speed
         ScanModeCount = 0x70, //Get the amount of scan modes supported by the LIDAR
         ScanModeUsPerSample = 0x71, //Get microsecond cost per measurement sample for specific scan mode(in Q8 fixed point format)
         ScanModeMaxDistance = 0x74, //Get max measurement distance for specific scan mode (in m, Q8 fixed point format)

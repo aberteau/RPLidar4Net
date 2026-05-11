@@ -166,12 +166,11 @@ namespace RPLidar4Net.IO
         {
             if (_isConnected)
             {
-                //Clear input buffer of any junk
-                _serialPort.DiscardInBuffer();
+                bool hasResponse = CommandHelper.GetHasResponse(command);
+                if (hasResponse) //Clear input buffer of any junk
+                    _serialPort.DiscardInBuffer();
 
                 _serialPort.SendRequest(command, payload, includePayloadSize);
-
-                bool hasResponse = CommandHelper.GetHasResponse(command);
 
                 //We must sleep after executing some commands
                 bool sleep = CommandHelper.GetMustSleep(command);
@@ -255,6 +254,15 @@ namespace RPLidar4Net.IO
             }
         }
 
+        public void SetMotorSpeed(ushort speed)
+        {
+            switch (_motorControlSupport)
+            {
+                case MotorControlSupport.RPM: SendRequest(Command.MotorSpeedControl, BitConverter.GetBytes(speed), true); break;
+                case MotorControlSupport.PWM: SendRequest(Command.SetMotorPWM, BitConverter.GetBytes(speed), true); break;
+            }
+        }
+
         /// <summary>
         /// Reset RPLidar
         /// </summary>
@@ -283,6 +291,14 @@ namespace RPLidar4Net.IO
         public LidarConfigDataResponse GetDesiredRotationFrequency()
         {
             return (LidarConfigDataResponse)this.SendRequest(Command.GetLidarConf, CommandHelper.GetLidarConfigPayload(LidarConfigType.DesiredRotationFrequency));
+        }
+        public LidarConfigDataResponse GetMinRotationFrequency()
+        {
+            return (LidarConfigDataResponse)this.SendRequest(Command.GetLidarConf, CommandHelper.GetLidarConfigPayload(LidarConfigType.MinRotationFrequency));
+        }
+        public LidarConfigDataResponse GetMaxRotationFrequency()
+        {
+            return (LidarConfigDataResponse)this.SendRequest(Command.GetLidarConf, CommandHelper.GetLidarConfigPayload(LidarConfigType.MaxRotationFrequency));
         }
         /// <summary>
         /// Get number of ScanModes via Lidar Conf
@@ -430,7 +446,7 @@ namespace RPLidar4Net.IO
                     catch 
                     {
                         //special case for C1 that does actually have motorcontrol but does not correctly answer the AccBoardFlag request
-                        return MotorControlSupport.PWM;
+                        return MotorControlSupport.RPM;
                     }
                 }
             }

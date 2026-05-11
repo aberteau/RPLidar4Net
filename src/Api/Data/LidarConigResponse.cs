@@ -19,7 +19,16 @@ namespace RPLidar4Net.Api.Data
         /// The desired rotatation frequency for the device in PWM
         /// </summary>
         public UInt16 DesiredRotationFrequencyPWM { get; set; }
+        
+        /// <summary>
+        /// The minimum rotation frequency for the device
+        /// </summary>
+        public UInt16 MinRotationFrequency{ get; set; }
 
+        /// <summary>
+        /// The maximum rotation frequency for the device
+        /// </summary>
+        public UInt16 MaxRotationFrequency { get; set; }
         /// <summary>
         /// The number of scan modes supported by the device
         /// </summary>
